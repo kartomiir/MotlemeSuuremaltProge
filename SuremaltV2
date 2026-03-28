@@ -13,16 +13,16 @@ drive_base.settings(turn_rate=x, turn_acceleration=y) For changing max turning s
 """
 tinychosen = hub_menu("1", "2", "3", "4", "5", "6", "X")  # Selection screen.
 if tinychosen == "1":
-    import first
+    import xfirst
 elif tinychosen == "2":
-    import second
+    import xsecond
 elif tinychosen == "3":
-    import third
+    import xthird
 elif tinychosen == "4":
-    import fourth
+    import xfourth
 elif tinychosen == "5":
-    import fifth
+    import xfifth
 elif tinychosen == "6":
-    import sixth
+    import xsixth
 elif tinychosen == "X":
-    import otheroptions
+    import xotheroptions
