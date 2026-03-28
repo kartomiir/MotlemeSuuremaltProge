@@ -1,0 +1,385 @@
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
+from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
+from pybricks.robotics import DriveBase
+from pybricks.tools import wait, StopWatch, hub_menu
+hub = PrimeHub()
+tool_left = Motor(Port.A)
+tool_right = Motor(Port.E)
+right_motor = Motor(Port.F)
+left_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # One motor needs to be counterclockwise for driving to work correctly.
+drive_base = DriveBase(left_motor, right_motor, wheel_diameter=62.4, axle_track=101)  # Axle track is the distance between the two points where wheels touch the ground
+"""
+Robot makes a left turn when drive_base.turn() < 0, a right turn when it is greater than 0.
+drive_base.straight() is in millimeters.
+drive_base.turn() is in degrees.
+drive_base.settings(straight_speed=x, straight_acceleration=y) For changing max speed and acceleration
+drive_base.settings(turn_rate=x, turn_acceleration=y) For changing max turning speed and turning acceleration
+"""
+drive_base.use_gyro(True)  # Gyro works
+def bothmotors(speed, time):
+    left_motor.run(speed)
+    right_motor.run(speed)
+    wait(time)
+    left_motor.stop()
+    right_motor.stop()
+chosen = hub_menu("1", "2", "3", "4", "5", "6", "X")  # Selection screen.
+def prh():  # PRH as in Pitch, Roll ja Heading. Mainly used for controlling the turning.
+    heading = hub.imu.heading()  # How much the robot has turned in degrees.
+    pitch, roll = hub.imu.tilt()
+    print(pitch, roll, heading)
+def batterycheck():
+        print(hub.battery.current())
+        print(hub.battery.voltage())
+def wheeliewashy():  # Used for washing the wheels.
+    drive_base.use_gyro(False)
+    drive_base.settings(straight_speed=749, straight_acceleration=100)  # Slow acceleration for the drama.
+    drive_base.straight(65535)
+
+def first():  # M01, M02
+    """
+    if tool_left.run() > 0 then the forklift moves down and vice versa
+    if tool_right.run() > 0 then the yellow thingymajig moves down and vice versa
+    """
+    drive_base.settings(straight_speed=600, straight_acceleration=450)
+    drive_base.settings(turn_rate=750, turn_acceleration=700)
+    tool_left.run(-800)
+    tool_right.run(-800)
+    wait(550)
+    tool_left.stop()
+    wait(100)
+    tool_right.stop()
+    drive_base.straight(644)
+    tool_left.run(800)  # Forklift down for brush hits.
+    wait(240)
+    tool_left.stop()
+    drive_base.settings(turn_rate=300, turn_acceleration=500)
+    drive_base.turn(-135)  # Begins hitting the brush.
+    drive_base.turn(88)
+    # drive_base.turn(-90)  # Extra brush hits if the robot becomes unstable.
+    # drive_base.turn(88)  # Last brush hit.
+    tool_left.run(-800)
+    wait(400)
+    tool_left.stop()
+    drive_base.settings(turn_rate=750, turn_acceleration=850)
+    drive_base.turn(-44.5)  # Aligns forklift with brush
+    drive_base.straight(-10)
+    wait(50)
+    tool_left.run(800)  # Brush pickup starts.
+    wait(510)
+    tool_left.stop()
+    tool_left.run(-800)
+    wait(950)
+    tool_left.stop()  # Brush pickup ends.
+    drive_base.straight(-18)
+    drive_base.settings(turn_rate=500, turn_acceleration=500)
+    drive_base.turn(90)
+    drive_base.straight(-36)
+    drive_base.turn(-45)  # Finishes aligning with M02.
+    drive_base.settings(straight_speed=500, straight_acceleration=400)
+    drive_base.straight(246)  # Topsoil sections.
+    tool_right.run(800)
+    wait(425)
+    tool_right.stop()
+    drive_base.straight(53)  # Pushes 2 topsoil sections.
+    drive_base.straight(-10)
+    tool_right.run(-800)
+    wait(425)
+    tool_right.stop()
+    drive_base.turn(-20)  # Turns to grab the last topsoil section.
+    drive_base.settings(turn_rate=1089, turn_acceleration=1200)
+    drive_base.settings(straight_speed=1089, straight_acceleration=1200)
+    drive_base.straight(-270)
+    drive_base.turn(-95)
+    drive_base.straight(750)  # Goes back to base.
+
+def third():  # M12, M10, M15 two
+    """
+    if tool_left.run() > 0 then the forklift moves down and vice versa
+    if tool_right.run() > 0 then the yellow thingymajig moves down and vice versa
+    """
+    tool_left.run(850)  # Forklift clicks the button on the Motorbike
+    tool_right.run(-800)
+    wait(530)
+    tool_left.stop()  # Forklift stops going down
+    wait(75)  # Yellow thing keeps moving
+    tool_right.stop()
+    wait(150)  # Motor break
+    tool_left.run(-800)  # Moves forklift back up
+    wait(900)
+    tool_left.stop()
+    onechoice = hub_menu("0", "X")  # Break time until the next human input to put the Pickaxe on
+    if onechoice == "0":
+        drive_base.settings(straight_speed=800, straight_acceleration=800)
+        drive_base.straight(100)
+        drive_base.turn(5)  # Alignment for M12.
+        drive_base.straight(150)
+        drive_base.settings(straight_speed=350, straight_acceleration=400)
+        drive_base.straight(200)
+        drive_base.turn(4)
+        drive_base.straight(85)  # Finishes pushing the boat
+        tool_right.run(800)  # Yellow thingymajig down to pull red thingymajig back.
+        tool_left.run(800)  # Puts flag down
+        wait(615)
+        tool_left.stop()
+        wait(25)  # Yellow keeps going
+        tool_right.stop()
+        drive_base.turn(-10)
+        drive_base.settings(straight_speed=200, straight_acceleration=200)
+        drive_base.straight(-78)
+        tool_right.run(-800)
+        wait(570)
+        tool_right.stop()
+        drive_base.settings(straight_speed=800, straight_acceleration=800)
+        drive_base.settings(turn_rate=750, turn_acceleration=800)
+        drive_base.turn(8)
+        drive_base.straight(-50)
+        drive_base.turn(-42)  # Align for M10.
+        tool_left.run(-800)
+        wait(540)
+        tool_left.stop()
+        drive_base.straight(695)
+        tool_left.run(800)  # Basket.
+        wait(570)
+        tool_left.stop()
+        drive_base.straight(-183)  
+        drive_base.turn(60)
+        drive_base.settings(turn_rate=300, turn_acceleration=150)
+        drive_base.straight(156)
+        drive_base.settings(straight_speed=1089, straight_acceleration=2000)
+        drive_base.turn(-33)  # Turns into scale pan
+        drive_base.turn(18)
+        drive_base.straight(-22)  # Goes backwards to align the robots turning path with the pan
+        drive_base.turn(30)
+        drive_base.turn(-20)
+        drive_base.straight(800)  # Back to base
+
+def fourth():  # M09, M07, M11
+    """
+    if tool_left.run() < 0 it goes the CORRECT way, spinning clockwise.
+    """
+    drive_base.straight(157)
+    wait(150)  # Waits so the formula FL can drive
+    drive_base.straight(-50)
+    drive_base.turn(75)
+    drive_base.straight(100)
+    drive_base.turn(-30)  # Aligns with M09
+    drive_base.straight(288)
+    tool_left.run(300)  # Knocks red pin down
+    wait(800)
+    tool_left.stop()
+    drive_base.straight(34)  # Goes further so the long stick can go behind the roof
+    drive_base.settings(straight_speed=300, straight_acceleration=200)
+    drive_base.straight(-395)  # Pulls roof back
+    drive_base.turn(-28)
+    drive_base.settings(straight_speed=800, straight_acceleration=500)
+    drive_base.settings(turn_rate=500, turn_acceleration=400)
+    left_motor.run(800)
+    right_motor.run(800)
+    tool_left.run(-300)  # Tool out of the way
+    wait(800)
+    tool_left.stop()
+    left_motor.stop()
+    right_motor.stop()
+    drive_base.turn(5)  # Slight turn to avoid pushing the artifact backwards
+    left_motor.run(400)
+    right_motor.run(400)
+    wait(1000)
+    left_motor.stop()
+    right_motor.stop()
+    drive_base.turn(-22)  # Gets behind the artifact rope
+    drive_base.straight(-66)
+    drive_base.turn(45)  # Lets go of the artifact
+    drive_base.straight(-110)
+    drive_base.turn(-20)
+    drive_base.settings(straight_speed=1089, straight_acceleration=1200)
+    drive_base.straight(-650)
+
+def fifth():  # M06, M05, M08
+    """
+    if tool_right.run() > 0, it goes the correct way, pushing things out of its chamber.
+    if tool_left.run() > 0 the tool goes the correct way, extending out of the robot.
+    """
+    drive_base.settings(straight_speed=700, straight_acceleration=550)
+    drive_base.settings(turn_rate=800, turn_acceleration=500)
+    drive_base.straight(252.5)
+    drive_base.turn(-6.5)  # Slightly left for the ore block lever
+    drive_base.straight(191)
+    drive_base.turn(6.5)
+    drive_base.straight(340)  # Hits red lever for ore blocks
+    drive_base.turn(-20)  # Little movement just in case the lever doesn't move
+    drive_base.turn(20)
+    drive_base.straight(-95)
+    drive_base.turn(-98)  # Turns to go align with the home wall between M08 and M06
+    drive_base.straight(-400)  # Gets ore blocks to home area
+    drive_base.straight(50)
+    bothmotors(-400, 750)  # Zeroing
+    drive_base.straight(15)
+    drive_base.turn(-20)
+    drive_base.straight(50)
+    drive_base.turn(20)
+    drive_base.straight(310)
+    drive_base.turn(14)
+    tool_left.run(-800)  # Moves red slider to put the structure floor upright
+    wait(425)
+    tool_left.stop()
+    wait(100)
+    drive_base.straight(30)
+    drive_base.turn(-10)
+    drive_base.straight(22)
+    tool_left.run(800)
+    wait(425)
+    tool_left.stop()
+    drive_base.straight(10)  # Goes a little forward so it wouldn't align too close to M08
+    drive_base.turn(88)
+    drive_base.straight(-278)
+    tool_right.run(125)  # Drops weight pieces.
+    wait(4000)
+    tool_right.stop()
+    drive_base.settings(straight_speed=1089)
+    drive_base.turn(-25)
+    drive_base.straight(-500)
+
+def second():  # M03, M04, M13
+    drive_base.settings(straight_speed=800, straight_acceleration=600)
+    drive_base.settings(turn_rate=800, turn_acceleration=700)
+    tool_right.run(800)
+    tool_left.run(-800)
+    wait(250)
+    tool_right.stop()
+    wait(150)
+    tool_left.stop()
+    drive_base.straight(400)
+    drive_base.turn(33)
+    drive_base.straight(260)
+    drive_base.turn(147)
+    right_motor.run(-500)  # Zeroing start
+    left_motor.run(-500)
+    tool_right.run(-800)
+    wait(250)
+    tool_right.stop()  # Stops moving knife down
+    wait(2750)
+    right_motor.stop()
+    left_motor.stop()  # Zeroing end
+    drive_base.straight(20.5)
+    drive_base.turn(-30)
+    drive_base.straight(20)
+    drive_base.turn(-61)  # Slightly wider turn to align with artifact
+    drive_base.straight(-30)
+    tool_left.run(800)  # Artifact holder down
+    wait(400)
+    tool_left.stop()
+    drive_base.settings(straight_speed=500, straight_acceleration=250)
+    drive_base.straight(140)
+    tool_right.run(400)  # Moves minecart up with Knife
+    tool_left.run(-250)  # Artifact up so it can't fall down on the way out
+    wait(100)
+    tool_left.stop()  # Stops moving artifact up
+    wait(480)
+    tool_right.stop()
+    wait(1000)  # Hold while up
+    drive_base.settings(straight_speed=800, straight_acceleration=600)
+    drive_base.straight(-140)
+    tool_right.run(-800) # Knife down for fish
+    tool_left.run(-400)  # Artifact holder far up
+    wait(200)
+    tool_left.stop()
+    wait(290)
+    tool_right.stop()  # Letting Knife down end
+    tool_left.stop()
+    drive_base.turn(19)
+    drive_base.straight(150)
+    drive_base.turn(21)
+    tool_right.run(130)  # Fish setup
+    wait(200)
+    tool_right.stop()
+    drive_base.straight(100)
+    drive_base.turn(-4)  # Slightly left for Fish alignment
+    drive_base.straight(97)
+    tool_right.run(130)  # Fish
+    wait(2700)
+    tool_right.stop()
+    drive_base.settings(straight_speed=1089, straight_acceleration=1200)
+    drive_base.settings(turn_rate=1089, turn_acceleration=1200)
+    drive_base.turn(-4)
+    drive_base.straight(-227)  # Starts going back
+    drive_base.turn(82)
+    drive_base.straight(750)
+
+def sixth():  # M14, M15 one
+    drive_base.settings(straight_speed=600, straight_acceleration=400)
+    drive_base.settings(turn_rate=400, turn_acceleration=300)
+    drive_base.straight(250)
+    drive_base.turn(92)
+    drive_base.straight(531)
+    drive_base.turn(-40)
+    drive_base.straight(100)
+    drive_base.turn(-15)
+    drive_base.straight(125)
+    tool_right.run(-800)  # Gets the box up and out of the way
+    wait(200)
+    tool_right.stop()
+    drive_base.straight(101)
+    tool_left.run(400)  # Lets flag down and gets the minecart from the opposing team
+    wait(600)
+    tool_left.stop()
+    tool_right.run(800)  # Box back down
+    wait(200)
+    tool_right.stop()
+    drive_base.straight(-40)
+    drive_base.turn(-15)
+    drive_base.straight(30)
+    drive_base.turn(-10)
+    drive_base.straight(425)
+    drive_base.turn(-10)
+    drive_base.straight(44)  # Barely misses M04 so no 10 point loss
+    drive_base.turn(-17)
+    drive_base.straight(192)
+    drive_base.turn(-38)  # Past the Fish so it doesn't unsolve it
+    drive_base.straight(140)
+    tool_right.run(-800)  # Forum box up
+    wait(400)
+    tool_right.stop()
+    wait(150)  # Motor break
+    tool_right.run(800)  # Box down so the minecart can go past it
+    tool_left.run(-600)  # Puts the minecart down
+    wait(400)
+    tool_left.stop()
+    tool_right.stop()
+    wait(400)  # Motor break
+    tool_left.run(600)
+    tool_right.run(-800)
+    wait(400)  # Tools back up
+    tool_left.stop()
+    tool_right.stop()
+    drive_base.straight(-150)  # Out of the forum
+    drive_base.turn(8)
+    drive_base.straight(-50)
+
+def testrun():  # Where we tested different pieces of code
+    # drive_base.settings(straight_speed=1089, straight_acceleration=2000)
+    # drive_base.settings(turn_rate=500, turn_acceleration=500)
+    # drive_base.straight(1000)  # Test code 1. For testing the motors and gyro.
+    # drive_base.turn(360) # Test code 2. For testing the motors and gyro
+    print("W")
+
+if chosen == "1":
+    first()
+elif chosen == "2":
+    second()
+elif chosen == "3":
+    third()
+elif chosen == "4":
+    fourth()
+elif chosen == "5":
+    fifth()
+elif chosen == "6":
+    sixth()
+elif chosen == "X":
+    selected = hub_menu("W", "T", "B", "X")
+    if selected == "W":
+        wheeliewashy()
+    elif selected == "T":
+        testrun()
+    elif selected == "B":
+        batterycheck()
