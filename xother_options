@@ -1,0 +1,38 @@
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
+from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
+from pybricks.robotics import DriveBase
+from pybricks.tools import wait, StopWatch, hub_menu
+hub = PrimeHub()
+word = hub_menu("T", "A", "B", "L", "R", "X")
+tool_left = Motor(Port.A)
+tool_right = Motor(Port.E)
+right_motor = Motor(Port.F)
+left_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # One motor needs to be counterclockwise for driving to work correctly.
+drive_base = DriveBase(left_motor, right_motor, wheel_diameter=62.4, axle_track=101)  # Axle track is the distance between the two points where the wheels touch the ground
+def testrun():  # Where we tested different pieces of code
+    # drive_base.settings(straight_speed=1089, straight_acceleration=2000)
+    # drive_base.settings(turn_rate=500, turn_acceleration=500)
+    # drive_base.straight(1000)  # Test code 1. For testing the motors and gyro.
+    # drive_base.turn(360) # Test code 2. For testing the motors and gyro
+    drive_base.settings(straight_speed=1089, straight_acceleration=2000)
+    prh()
+    drive_base.straight(200)
+    prh()
+
+def batterycheck():
+        print(hub.battery.current())
+        print(hub.battery.voltage())
+
+def wheeliewashy():  # Used for washing the wheels.
+    drive_base.use_gyro(False)
+    drive_base.settings(straight_speed=749, straight_acceleration=100)  # Slow acceleration for the drama.
+    drive_base.straight(65535)
+
+selected = hub_menu("W", "T", "B", "X")
+if selected == "W":
+    wheeliewashy()
+elif selected == "T":
+    testrun()
+elif selected == "B":
+    batterycheck()
