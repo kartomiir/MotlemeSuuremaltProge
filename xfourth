@@ -1,0 +1,67 @@
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
+from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
+from pybricks.robotics import DriveBase
+from pybricks.tools import wait, StopWatch
+hub = PrimeHub()
+tool_left = Motor(Port.A)
+tool_right = Motor(Port.E)
+right_motor = Motor(Port.F)
+left_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # One motor needs to be counterclockwise for driving to work correctly.
+drive_base = DriveBase(left_motor, right_motor, wheel_diameter=62.4, axle_track=101)  # Axle track is the distance between the two points where the wheels touch the ground
+"""
+Robot makes a left turn when drive_base.turn() < 0, a right turn when it is greater than 0.
+drive_base.straight() is in millimeters.
+drive_base.turn() is in degrees.
+drive_base.settings(straight_speed=x, straight_acceleration=y) For changing max speed and acceleration
+drive_base.settings(turn_rate=x, turn_acceleration=y) For changing max turning speed and turning acceleration
+"""
+drive_base.use_gyro(True)  # Gyro works
+drive_base.settings(straight_speed=600, straight_acceleration=400)
+drive_base.settings(turn_rate=400, turn_acceleration=300)
+drive_base.straight(250)
+drive_base.turn(92)
+drive_base.straight(531)
+drive_base.turn(-40)
+drive_base.straight(100)
+drive_base.turn(-15)
+drive_base.straight(125)
+tool_right.run(-800)  # Gets the box up and out of the way
+wait(200)
+tool_right.stop()
+drive_base.straight(101)
+tool_left.run(400)  # Lets flag down and gets the minecart from the opposing team
+wait(600)
+tool_left.stop()
+tool_right.run(800)  # Box back down
+wait(200)
+tool_right.stop()
+drive_base.straight(-40)
+drive_base.turn(-15)
+drive_base.straight(30)
+drive_base.turn(-10)
+drive_base.straight(425)
+drive_base.turn(-10)
+drive_base.straight(44)  # Barely misses M04 so no 10 point loss
+drive_base.turn(-17)
+drive_base.straight(192)
+drive_base.turn(-38)  # Past the Fish so it doesn't unsolve it
+drive_base.straight(140)
+tool_right.run(-800)  # Forum box up
+wait(400)
+tool_right.stop()
+wait(150)  # Motor break
+tool_right.run(800)  # Box down so the minecart can go past it
+tool_left.run(-600)  # Puts the minecart down
+wait(400)
+tool_left.stop()
+tool_right.stop()
+wait(400)  # Motor break
+tool_left.run(600)
+tool_right.run(-800)
+wait(400)  # Tools back up
+tool_left.stop()
+tool_right.stop()
+drive_base.straight(-150)  # Out of the forum
+drive_base.turn(8)
+drive_base.straight(-50)
