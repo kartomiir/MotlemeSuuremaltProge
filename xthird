@@ -1,0 +1,71 @@
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
+from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
+from pybricks.robotics import DriveBase
+from pybricks.tools import wait, StopWatch
+hub = PrimeHub()
+tool_left = Motor(Port.A)
+tool_right = Motor(Port.E)
+right_motor = Motor(Port.F)
+left_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # One motor needs to be counterclockwise for driving to work correctly.
+drive_base = DriveBase(left_motor, right_motor, wheel_diameter=62.4, axle_track=101)  # Axle track is the distance between the two points where the wheels touch the ground
+drive_base.use_gyro(True)  # Gyro works
+"""
+if tool_left.run() > 0 then the forklift moves down and vice versa
+if tool_right.run() > 0 then the yellow thingymajig moves down and vice versa
+"""
+tool_left.run(850)  # Forklift clicks the button on the Motorbike
+tool_right.run(-800)
+wait(530)
+tool_left.stop()  # Forklift stops going down
+wait(75)  # Yellow thing keeps moving
+tool_right.stop()
+wait(150)  # Motor break
+tool_left.run(-800)  # Moves forklift back up
+wait(900)
+tool_left.stop()
+onechoice = hub_menu("0", "X")  # Break time until the next human input to put the Pickaxe on
+    if onechoice == "0":
+    drive_base.settings(straight_speed=800, straight_acceleration=800)
+    drive_base.straight(100)
+    drive_base.turn(5)  # Alignment for M12.
+    drive_base.straight(150)
+    drive_base.settings(straight_speed=350, straight_acceleration=400)
+    drive_base.straight(200)
+    drive_base.turn(4)
+    drive_base.straight(85)  # Finishes pushing the boat
+    tool_right.run(800)  # Yellow thingymajig down to pull red thingymajig back.
+    tool_left.run(800)  # Puts flag down
+    wait(615)
+    tool_left.stop()
+    wait(25)  # Yellow keeps going
+    tool_right.stop()
+    drive_base.turn(-10)
+    drive_base.settings(straight_speed=200, straight_acceleration=200)
+    drive_base.straight(-78)
+    tool_right.run(-800)
+    wait(570)
+    tool_right.stop()
+    drive_base.settings(straight_speed=800, straight_acceleration=800)
+    drive_base.settings(turn_rate=750, turn_acceleration=800)
+    drive_base.turn(8)
+    drive_base.straight(-50)
+    drive_base.turn(-42)  # Align for M10.
+    tool_left.run(-800)
+    wait(540)
+    tool_left.stop()
+    drive_base.straight(695)
+    tool_left.run(800)  # Basket.
+    wait(570)
+    tool_left.stop()
+    drive_base.straight(-183)  
+    drive_base.turn(60)
+    drive_base.settings(turn_rate=300, turn_acceleration=150)
+    drive_base.straight(156)
+    drive_base.settings(straight_speed=1089, straight_acceleration=2000)
+    drive_base.turn(-33)  # Turns into scale pan
+    drive_base.turn(18)
+    drive_base.straight(-22)  # Goes backwards to align the robots turning path with the pan
+    drive_base.turn(30)
+    drive_base.turn(-20)
+    drive_base.straight(800)  # Back to base
