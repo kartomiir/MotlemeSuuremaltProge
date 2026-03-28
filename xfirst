@@ -1,0 +1,67 @@
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
+from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
+from pybricks.robotics import DriveBase
+from pybricks.tools import wait, StopWatch
+hub = PrimeHub()
+tool_left = Motor(Port.A)
+tool_right = Motor(Port.E)
+right_motor = Motor(Port.F)
+left_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # One motor needs to be counterclockwise for driving to work correctly.
+drive_base = DriveBase(left_motor, right_motor, wheel_diameter=62.4, axle_track=101)  # Axle track is the distance between the two points where the wheels touch the ground
+drive_base.use_gyro(True)  # Gyro works
+"""
+if tool_left.run() > 0 then the forklift moves down and vice versa
+if tool_right.run() > 0 then the yellow thingymajig moves down and vice versa
+"""
+drive_base.settings(straight_speed=600, straight_acceleration=450)
+drive_base.settings(turn_rate=750, turn_acceleration=700)
+tool_left.run(-800)
+tool_right.run(-800)
+wait(550)
+tool_left.stop()
+wait(100)
+tool_right.stop()
+drive_base.straight(644)
+tool_left.run(800)  # Forklift down for brush hits.
+wait(240)
+tool_left.stop()
+drive_base.settings(turn_rate=300, turn_acceleration=500)
+drive_base.turn(-135)  # Begins hitting the brush.
+drive_base.turn(88)
+# drive_base.turn(-90)  # Extra brush hits if the robot becomes unstable.
+# drive_base.turn(88)  # Last brush hit.
+tool_left.run(-800)
+wait(400)
+tool_left.stop()
+drive_base.settings(turn_rate=750, turn_acceleration=850)
+drive_base.turn(-44.5)  # Aligns forklift with brush
+drive_base.straight(-10)
+wait(50)
+tool_left.run(800)  # Brush pickup starts.
+wait(510)
+tool_left.stop()
+tool_left.run(-800)
+wait(950)
+tool_left.stop()  # Brush pickup ends.
+drive_base.straight(-18)
+drive_base.settings(turn_rate=500, turn_acceleration=500)
+drive_base.turn(90)
+drive_base.straight(-36)
+drive_base.turn(-45)  # Finishes aligning with M02.
+drive_base.settings(straight_speed=500, straight_acceleration=400)
+drive_base.straight(246)  # Topsoil sections.
+tool_right.run(800)
+wait(425)
+tool_right.stop()
+drive_base.straight(53)  # Pushes 2 topsoil sections.
+drive_base.straight(-10)
+tool_right.run(-800)
+wait(425)
+tool_right.stop()
+drive_base.turn(-20)  # Turns to grab the last topsoil section.
+drive_base.settings(turn_rate=1089, turn_acceleration=1200)
+drive_base.settings(straight_speed=1089, straight_acceleration=1200)
+drive_base.straight(-270)
+drive_base.turn(-95)
+drive_base.straight(750)  # Goes back to base.
