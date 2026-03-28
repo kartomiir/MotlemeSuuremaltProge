@@ -1,0 +1,76 @@
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
+from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
+from pybricks.robotics import DriveBase
+from pybricks.tools import wait, StopWatch
+hub = PrimeHub()
+tool_left = Motor(Port.A)
+tool_right = Motor(Port.E)
+right_motor = Motor(Port.F)
+left_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # One motor needs to be counterclockwise for driving to work correctly.
+drive_base = DriveBase(left_motor, right_motor, wheel_diameter=62.4, axle_track=101)  # Axle track is the distance between the two points where the wheels touch the ground
+drive_base.settings(straight_speed=800, straight_acceleration=600)
+drive_base.settings(turn_rate=800, turn_acceleration=700)
+drive_base.use_gyro(True)
+tool_right.run(800)
+tool_left.run(-800)
+wait(250)
+tool_right.stop()
+wait(150)
+tool_left.stop()
+drive_base.straight(400)
+drive_base.turn(33)
+drive_base.straight(260)
+drive_base.turn(147)
+right_motor.run(-500)  # Zeroing start
+left_motor.run(-500)
+tool_right.run(-800)
+wait(250)
+tool_right.stop()  # Stops moving knife down
+wait(2750)
+right_motor.stop()
+left_motor.stop()  # Zeroing end
+drive_base.straight(20.5)
+drive_base.turn(-30)
+drive_base.straight(20)
+drive_base.turn(-61)  # Slightly wider turn to align with artifact
+drive_base.straight(-30)
+tool_left.run(800)  # Artifact holder down
+wait(400)
+tool_left.stop()
+drive_base.settings(straight_speed=500, straight_acceleration=250)
+drive_base.straight(140)
+tool_right.run(400)  # Moves minecart up with Knife
+tool_left.run(-250)  # Artifact up so it can't fall down on the way out
+wait(100)
+tool_left.stop()  # Stops moving artifact up
+wait(480)
+tool_right.stop()
+wait(1000)  # Hold while up
+drive_base.settings(straight_speed=800, straight_acceleration=600)
+drive_base.straight(-140)
+tool_right.run(-800) # Knife down for fish
+tool_left.run(-400)  # Artifact holder far up
+wait(200)
+tool_left.stop()
+wait(290)
+tool_right.stop()  # Letting Knife down end
+tool_left.stop()
+drive_base.turn(19)
+drive_base.straight(150)
+drive_base.turn(21)
+tool_right.run(130)  # Fish setup
+wait(200)
+tool_right.stop()
+drive_base.straight(100)
+drive_base.turn(-4)  # Slightly left for Fish alignment
+drive_base.straight(97)
+tool_right.run(130)  # Fish
+wait(2700)
+tool_right.stop()
+drive_base.settings(straight_speed=1089, straight_acceleration=1200)
+drive_base.settings(turn_rate=1089, turn_acceleration=1200)
+drive_base.turn(-4)
+drive_base.straight(-227)  # Starts going back
+drive_base.turn(82)
+drive_base.straight(750)
