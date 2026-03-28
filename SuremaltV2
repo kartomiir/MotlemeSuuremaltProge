@@ -1,0 +1,28 @@
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
+from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
+from pybricks.robotics import DriveBase
+from pybricks.tools import wait, StopWatch, hub_menu
+hub = PrimeHub()
+"""
+Robot makes a left turn when drive_base.turn() < 0, a right turn when it is greater than 0.
+drive_base.straight() is in millimeters.
+drive_base.turn() is in degrees.
+drive_base.settings(straight_speed=x, straight_acceleration=y) For changing max speed and acceleration
+drive_base.settings(turn_rate=x, turn_acceleration=y) For changing max turning speed and turning acceleration
+"""
+tinychosen = hub_menu("1", "2", "3", "4", "5", "6", "X")  # Selection screen.
+if tinychosen == "1":
+    import first
+elif tinychosen == "2":
+    import second
+elif tinychosen == "3":
+    import third
+elif tinychosen == "4":
+    import fourth
+elif tinychosen == "5":
+    import fifth
+elif tinychosen == "6":
+    import sixth
+elif tinychosen == "X":
+    import otheroptions
