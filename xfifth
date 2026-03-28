@@ -1,0 +1,62 @@
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
+from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
+from pybricks.robotics import DriveBase
+from pybricks.tools import wait, StopWatch
+hub = PrimeHub()
+tool_left = Motor(Port.A)
+tool_right = Motor(Port.E)
+right_motor = Motor(Port.F)
+left_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # One motor needs to be counterclockwise for driving to work correctly.
+drive_base = DriveBase(left_motor, right_motor, wheel_diameter=62.4, axle_track=101)  # Axle track is the distance between the two points where the wheels touch the ground
+"""
+Robot makes a left turn when drive_base.turn() < 0, a right turn when it is greater than 0.
+drive_base.straight() is in millimeters.
+drive_base.turn() is in degrees.
+drive_base.settings(straight_speed=x, straight_acceleration=y) For changing max speed and acceleration
+drive_base.settings(turn_rate=x, turn_acceleration=y) For changing max turning speed and turning acceleration
+"""
+drive_base.use_gyro(True)  # Gyro works
+"""
+if tool_right.run() > 0, it goes the correct way, pushing things out of its chamber.
+if tool_left.run() > 0 the tool goes the correct way, extending out of the robot.
+"""
+drive_base.settings(straight_speed=700, straight_acceleration=550)
+drive_base.settings(turn_rate=800, turn_acceleration=500)
+drive_base.straight(252.5)
+drive_base.turn(-6.5)  # Slightly left for the ore block lever
+drive_base.straight(191)
+drive_base.turn(6.5)
+drive_base.straight(340)  # Hits red lever for ore blocks
+drive_base.turn(-20)  # Little movement just in case the lever doesn't move
+drive_base.turn(20)
+drive_base.straight(-95)
+drive_base.turn(-98)  # Turns to go align with the home wall between M08 and M06
+drive_base.straight(-400)  # Gets ore blocks to home area
+drive_base.straight(50)
+bothmotors(-400, 750)  # Zeroing
+drive_base.straight(15)
+drive_base.turn(-20)
+drive_base.straight(50)
+drive_base.turn(20)
+drive_base.straight(310)
+drive_base.turn(14)
+tool_left.run(-800)  # Moves red slider to put the structure floor upright
+wait(425)
+tool_left.stop()
+wait(100)
+drive_base.straight(30)
+drive_base.turn(-10)
+drive_base.straight(22)
+tool_left.run(800)
+wait(425)
+tool_left.stop()
+drive_base.straight(10)  # Goes a little forward so it wouldn't align too close to M08
+drive_base.turn(88)
+drive_base.straight(-278)
+tool_right.run(125)  # Drops weight pieces.
+wait(4000)
+tool_right.stop()
+drive_base.settings(straight_speed=1089)
+drive_base.turn(-25)
+drive_base.straight(-500)
