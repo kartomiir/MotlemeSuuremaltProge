@@ -1,0 +1,58 @@
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
+from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
+from pybricks.robotics import DriveBase
+from pybricks.tools import wait, StopWatch
+hub = PrimeHub()
+tool_left = Motor(Port.A)
+tool_right = Motor(Port.E)
+right_motor = Motor(Port.F)
+left_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # One motor needs to be counterclockwise for driving to work correctly.
+drive_base = DriveBase(left_motor, right_motor, wheel_diameter=62.4, axle_track=101)  # Axle track is the distance between the two points where the wheels touch the ground
+"""
+Robot makes a left turn when drive_base.turn() < 0, a right turn when it is greater than 0.
+drive_base.straight() is in millimeters.
+drive_base.turn() is in degrees.
+drive_base.settings(straight_speed=x, straight_acceleration=y) For changing max speed and acceleration
+drive_base.settings(turn_rate=x, turn_acceleration=y) For changing max turning speed and turning acceleration
+"""
+drive_base.use_gyro(True)  # Gyro works
+"""
+if tool_left.run() < 0 it goes the CORRECT way, spinning clockwise.
+"""
+drive_base.straight(157)
+wait(150)  # Waits so the formula FL can drive
+drive_base.straight(-50)
+drive_base.turn(75)
+drive_base.straight(100)
+drive_base.turn(-30)  # Aligns with M09
+drive_base.straight(288)
+tool_left.run(300)  # Knocks red pin down
+wait(800)
+tool_left.stop()
+drive_base.straight(34)  # Goes further so the long stick can go behind the roof
+drive_base.settings(straight_speed=300, straight_acceleration=200)
+drive_base.straight(-395)  # Pulls roof back
+drive_base.turn(-28)
+drive_base.settings(straight_speed=800, straight_acceleration=500)
+drive_base.settings(turn_rate=500, turn_acceleration=400)
+left_motor.run(800)
+right_motor.run(800)
+tool_left.run(-300)  # Tool out of the way
+wait(800)
+tool_left.stop()
+left_motor.stop()
+right_motor.stop()
+drive_base.turn(5)  # Slight turn to avoid pushing the artifact backwards
+left_motor.run(400)
+right_motor.run(400)
+wait(1000)
+left_motor.stop()
+right_motor.stop()
+drive_base.turn(-22)  # Gets behind the artifact rope
+drive_base.straight(-66)
+drive_base.turn(45)  # Lets go of the artifact
+drive_base.straight(-110)
+drive_base.turn(-20)
+drive_base.settings(straight_speed=1089, straight_acceleration=1200)
+drive_base.straight(-650)
