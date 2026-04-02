@@ -1,0 +1,54 @@
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
+from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
+from pybricks.robotics import DriveBase
+from pybricks.tools import wait, StopWatch
+keskus = PrimeHub()
+tooriist_vasak = Motor(Port.A)
+tooriist_parem = Motor(Port.E)
+parem_mootor = Motor(Port.F)
+vasak_mootor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # Üks mootor peab olema vastupäeva et sõitmine õigesti töötaks
+soidu_baas = DriveBase(vasak_mootor, parem_mootor, wheel_diameter=62.4, axle_track=101)  # Axle track ehk telje rööpmelaius on pikkus nende punktide vahel mis ratastel vastu maad on
+"""
+kui tooriist_parem.run() > 0, siis tööriist läheb õiget pidi, lükates raskusklotse kambrist välja.
+kui tooriist_vasak.run() > 0 siis pulk liigub õiget pidi, pikendades robotist välja.
+"""
+soidu_baas.settings(straight_speed=700, straight_acceleration=550)
+soidu_baas.settings(turn_rate=800, turn_acceleration=500)
+soidu_baas.straight(252.5)
+soidu_baas.turn(-6)  # Natuke vasakule maagi kangi jaoks
+soidu_baas.straight(191)
+soidu_baas.turn(6)
+soidu_baas.straight(340)  # Lükkab punast kangi maakide jaoks
+soidu_baas.turn(-20)  # Väike liigutus igaks juhuks kui kang ei liikunud
+soidu_baas.turn(20)
+soidu_baas.straight(-95)
+soidu_baas.turn(-98)  # Keerab et joonduda kodu seinaga M08 ja M06 vahel
+soidu_baas.straight(-400)  # Viib maagid kodu alale
+soidu_baas.straight(50)
+molemadmootorid(-400, 750)  # Nullimine
+soidu_baas.straight(15)
+soidu_baas.turn(-20)
+soidu_baas.straight(65)
+soidu_baas.turn(20)
+soidu_baas.straight(298)
+soidu_baas.turn(14)
+tooriist_vasak.run(-800)  # Liigutab punast liugurit et hoone põrandat tõsta
+wait(425)
+tooriist_vasak.stop()
+wait(100)
+soidu_baas.straight(30)
+soidu_baas.turn(-10)
+soidu_baas.straight(22)
+tooriist_vasak.run(800)
+wait(425)
+tooriist_vasak.stop()
+soidu_baas.straight(10)  # Läheb natuke edasi et see ei läheks M08le liiga lähedale
+soidu_baas.turn(88)
+soidu_baas.straight(-278)
+tooriist_parem.run(125)  # Kukutab raskusklotsid
+wait(4000)
+tooriist_parem.stop()
+soidu_baas.settings(straight_speed=1089)
+soidu_baas.turn(-25)
+soidu_baas.straight(-500) # Tagasi baasi
