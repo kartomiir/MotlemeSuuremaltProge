@@ -1,0 +1,75 @@
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
+from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
+from pybricks.robotics import DriveBase
+from pybricks.tools import wait, StopWatch
+keskus = PrimeHub()
+tooriist_vasak = Motor(Port.A)
+tooriist_parem = Motor(Port.E)
+parem_mootor = Motor(Port.F)
+vasak_mootor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # Üks mootor peab olema vastupäeva et sõitmine õigesti töötaks
+soidu_baas = DriveBase(vasak_mootor, parem_mootor, wheel_diameter=62.4, axle_track=101)  # Axle track ehk telje rööpmelaius on pikkus nende punktide vahel mis ratastel vastu maad on
+soidu_baas.settings(straight_speed=800, straight_acceleration=600)
+soidu_baas.settings(turn_rate=800, turn_acceleration=700)
+tooriist_parem.run(800)
+tooriist_vasak.run(-800)
+wait(250)
+tooriist_parem.stop()
+wait(150)
+tooriist_vasak.stop()
+soidu_baas.straight(400)
+soidu_baas.turn(33)
+soidu_baas.straight(260)
+soidu_baas.turn(147)
+parem_mootor.run(-500)  # Nullimise algus
+vasak_mootor.run(-500)
+tooriist_parem.run(-800)  # Nuga koos ratastega
+wait(250)
+tooriist_parem.stop()  # Lõpetab noa alla liigutamise
+wait(2750)
+parem_mootor.stop()
+vasak_mootor.stop()  # Nullimise lõpp
+soidu_baas.straight(20)
+soidu_baas.turn(-30)
+soidu_baas.straight(20)
+soidu_baas.turn(-62)  # Natuke laiem pööre et joonduda artefaktiga
+soidu_baas.straight(-30)
+tooriist_vasak.run(800)  # Artefakti hoidja alla
+wait(400)
+tooriist_vasak.stop()
+soidu_baas.settings(straight_speed=500, straight_acceleration=250)
+soidu_baas.straight(140)
+tooriist_parem.run(400)  # Liigutab käru noaga
+tooriist_vasak.run(-250)  # Artefakt üles et see ei saaks alla kukkuda teel välja
+wait(100)
+tooriist_vasak.stop()  # Lõpetab artefakti üles liigutamise
+wait(480)
+tooriist_parem.stop()
+wait(1000)  # Hoiab nuga üleval
+soidu_baas.settings(straight_speed=800, straight_acceleration=600)
+soidu_baas.straight(-140)
+tooriist_parem.run(-800) # Nuga alla kala jaoks
+tooriist_vasak.run(-400)  # Artefakti hoidja kõrgele üles
+wait(200)
+tooriist_vasak.stop()
+wait(290)
+tooriist_parem.stop()  # Lõpetab noa alla laskmise
+tooriist_vasak.stop()
+soidu_baas.turn(20)
+soidu_baas.straight(150)
+soidu_baas.turn(21)
+tooriist_parem.run(130)  # Kala seadistus
+wait(200)
+tooriist_parem.stop()
+soidu_baas.straight(99)
+soidu_baas.turn(-4)  # Natuke vasakule et kalaga joonduda
+soidu_baas.straight(94)
+tooriist_parem.run(130)  # Kala
+wait(2700)
+tooriist_parem.stop()
+soidu_baas.settings(straight_speed=1089, straight_acceleration=1200)
+soidu_baas.settings(turn_rate=1089, turn_acceleration=1200)
+soidu_baas.turn(-4)
+soidu_baas.straight(-227)  # Alustab tagasi minemist
+soidu_baas.turn(82)
+soidu_baas.straight(750)
