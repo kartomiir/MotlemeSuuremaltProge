@@ -1,0 +1,59 @@
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
+from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
+from pybricks.robotics import DriveBase
+from pybricks.tools import wait, StopWatch
+keskus = PrimeHub()
+tooriist_vasak = Motor(Port.A)
+tooriist_parem = Motor(Port.E)
+parem_mootor = Motor(Port.F)
+vasak_mootor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # Üks mootor peab olema vastupäeva et sõitmine õigesti töötaks
+soidu_baas = DriveBase(vasak_mootor, parem_mootor, wheel_diameter=62.4, axle_track=101)  # Axle track ehk telje rööpmelaius on pikkus nende punktide vahel mis ratastel vastu maad on
+    soidu_baas.settings(straight_speed=600, straight_acceleration=400)
+    soidu_baas.settings(turn_rate=400, turn_acceleration=300)
+    soidu_baas.straight(250)
+    soidu_baas.turn(92)
+    soidu_baas.straight(531)
+    soidu_baas.turn(-40)
+    soidu_baas.straight(100)
+    soidu_baas.turn(-15)
+    soidu_baas.straight(125)
+    tooriist_parem.run(-800)  # Liigutab kasti üles, eest ära
+    wait(200)
+    tooriist_parem.stop()
+    soidu_baas.straight(101)
+    tooriist_vasak.run(400)  # Laseb lipu alla ja saab käru vastastiimilt
+    wait(600)
+    tooriist_vasak.stop()
+    tooriist_parem.run(800)  # Kast tagasi alla
+    wait(200)
+    tooriist_parem.stop()
+    soidu_baas.straight(-40)
+    soidu_baas.turn(-15)
+    soidu_baas.straight(30)
+    soidu_baas.turn(-10)
+    soidu_baas.straight(425)
+    soidu_baas.turn(-10)
+    soidu_baas.straight(44)  # Vaevu läheb M04 mööda et 10 punkti ei kaotaks
+    soidu_baas.turn(-17)
+    soidu_baas.straight(192)
+    soidu_baas.turn(-38)  # Kalast mööda et see seda tagasi alla ei laseks
+    soidu_baas.straight(140)
+    tooriist_parem.run(-800)  # Foorumi kast üles
+    wait(400)
+    tooriist_parem.stop()
+    wait(150)  # Mootorite paus
+    tooriist_parem.run(800)  # Kast alla et käru saaks sellest mööda minna
+    tooriist_vasak.run(-600)  # Paneb käru alla
+    wait(400)
+    tooriist_vasak.stop()
+    tooriist_parem.stop()
+    wait(400)  # Mootorite paus
+    tooriist_vasak.run(600)
+    tooriist_parem.run(-800)
+    wait(400)  # Tööriistad tagasi üles
+    tooriist_vasak.stop()
+    tooriist_parem.stop()
+    soidu_baas.straight(-150)  # Foorumist välja
+    soidu_baas.turn(8)
+    soidu_baas.straight(-50)
