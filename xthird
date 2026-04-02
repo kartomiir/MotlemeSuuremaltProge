@@ -25,7 +25,7 @@ tool_left.run(-800)  # Moves forklift back up
 wait(900)
 tool_left.stop()
 onechoice = hub_menu("0", "X")  # Break time until the next human input to put the Pickaxe on
-    if onechoice == "0":
+if onechoice == "0":
     drive_base.settings(straight_speed=800, straight_acceleration=800)
     drive_base.straight(100)
     drive_base.turn(5)  # Alignment for M12.
