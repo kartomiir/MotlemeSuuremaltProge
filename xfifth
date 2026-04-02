@@ -9,6 +9,12 @@ tool_right = Motor(Port.E)
 right_motor = Motor(Port.F)
 left_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # One motor needs to be counterclockwise for driving to work correctly.
 drive_base = DriveBase(left_motor, right_motor, wheel_diameter=62.4, axle_track=101)  # Axle track is the distance between the two points where the wheels touch the ground
+def bothmotors(speed, time):
+    left_motor.run(speed)
+    right_motor.run(speed)
+    wait(time)
+    left_motor.stop()
+    right_motor.stop()
 """
 Robot makes a left turn when drive_base.turn() < 0, a right turn when it is greater than 0.
 drive_base.straight() is in millimeters.
