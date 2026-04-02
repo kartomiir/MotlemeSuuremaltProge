@@ -1,0 +1,66 @@
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
+from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
+from pybricks.robotics import DriveBase
+from pybricks.tools import wait, StopWatch
+keskus = PrimeHub()
+tooriist_vasak = Motor(Port.A)
+tooriist_parem = Motor(Port.E)
+parem_mootor = Motor(Port.F)
+vasak_mootor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # Üks mootor peab olema vastupäeva et sõitmine õigesti töötaks
+soidu_baas = DriveBase(vasak_mootor, parem_mootor, wheel_diameter=62.4, axle_track=101)  # Axle track ehk telje rööpmelaius on pikkus nende punktide vahel mis ratastel vastu maad on
+"""
+kui tooriist_vasak.run() > 0 siis tõstuk liigub alla ja vastupidi
+kui tooriist_parem.run() > 0 siis kollane asi liigub alla ja vastupidi
+"""
+soidu_baas.settings(straight_speed=600, straight_acceleration=450)
+soidu_baas.settings(turn_rate=750, turn_acceleration=700)
+tooriist_vasak.run(-800)
+tooriist_parem.run(-800)
+wait(550)
+tooriist_vasak.stop()
+wait(100)
+tooriist_parem.stop()
+soidu_baas.straight(644)
+tooriist_vasak.run(800)  # Tõstuk alla harja löömiseks
+wait(240)
+tooriist_vasak.stop()
+soidu_baas.settings(turn_rate=300, turn_acceleration=500)
+soidu_baas.turn(-135)  # Alustab harja löömist
+soidu_baas.turn(88)
+# soidu_baas.turn(-90)  # Lisa harja löögid kui robot ebastabiilne on
+# soidu_baas.turn(88)  # Viimane harja löök
+tooriist_vasak.run(-800)
+wait(400)
+tooriist_vasak.stop()
+soidu_baas.settings(turn_rate=750, turn_acceleration=850)
+soidu_baas.turn(-43)  # Joondab tõstuki harjaga
+soidu_baas.straight(-10)
+wait(50)
+tooriist_vasak.run(800)  # Alustab harja ülesvõtmist
+wait(510)
+tooriist_vasak.stop()
+tooriist_vasak.run(-800)
+wait(950)
+tooriist_vasak.stop()  # Lõpetab harja ülesvõtmist
+soidu_baas.straight(-18)
+soidu_baas.settings(turn_rate=500, turn_acceleration=500)
+soidu_baas.turn(90)
+soidu_baas.straight(-36)
+soidu_baas.turn(-45)  # Lõpetab joondumise M02-ga
+soidu_baas.settings(straight_speed=500, straight_acceleration=400)
+soidu_baas.straight(246)  # Kaardid
+tooriist_parem.run(800)
+wait(425)
+tooriist_parem.stop()
+soidu_baas.straight(51.5)  # Lükkab kahte kaarti
+soidu_baas.straight(-10)
+tooriist_parem.run(-800)
+wait(425)
+tooriist_parem.stop()
+soidu_baas.turn(-20)  # Keerab, et viimane kaart kaasa haarata
+soidu_baas.settings(turn_rate=1089, turn_acceleration=1200)
+soidu_baas.settings(straight_speed=1089, straight_acceleration=1200)
+soidu_baas.straight(-270)
+soidu_baas.turn(-95)
+soidu_baas.straight(750)  # Läheb tagasi baasi
