@@ -1,0 +1,50 @@
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
+from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
+from pybricks.robotics import DriveBase
+from pybricks.tools import wait, StopWatch
+keskus = PrimeHub()
+tooriist_vasak = Motor(Port.A)
+tooriist_parem = Motor(Port.E)
+parem_mootor = Motor(Port.F)
+vasak_mootor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # Üks mootor peab olema vastupäeva et sõitmine õigesti töötaks
+soidu_baas = DriveBase(vasak_mootor, parem_mootor, wheel_diameter=62.4, axle_track=101)  # Axle track ehk telje rööpmelaius on pikkus nende punktide vahel mis ratastel vastu maad on
+"""
+kui tooriist_vasak.run() < 0 Pulk läheb õiget pidi, keerutades päripäeva.
+"""
+soidu_baas.straight(157)
+wait(303)  # Ootab et Vormel FL saaks sõita
+soidu_baas.straight(-50)
+soidu_baas.turn(75)
+soidu_baas.straight(100)
+soidu_baas.turn(-30)  # Joondub M09'ga
+soidu_baas.straight(285)
+tooriist_vasak.run(300)  # Lükkab punase pulga maha
+wait(700)
+tooriist_vasak.stop()
+soidu_baas.straight(37)  # Läheb kaugemale et pikk pulk saaks katuse taha minna
+soidu_baas.settings(straight_speed=300, straight_acceleration=200)
+soidu_baas.straight(-395)  # Tõmbab katuse tagasi
+soidu_baas.turn(-28)
+soidu_baas.settings(straight_speed=800, straight_acceleration=500)
+soidu_baas.settings(turn_rate=500, turn_acceleration=400)
+vasak_mootor.run(800)
+parem_mootor.run(800)
+tooriist_vasak.run(-300)  # Tööriist eest ära
+wait(800)
+tooriist_vasak.stop()
+vasak_mootor.stop()
+parem_mootor.stop()
+soidu_baas.turn(5)  # Väike pööre et artefakt tagasi ei lükataks
+vasak_mootor.run(400)
+parem_mootor.run(400)
+wait(1000)
+vasak_mootor.stop()
+parem_mootor.stop()
+soidu_baas.turn(-22)  # Läheb artefakti nööri taha
+soidu_baas.straight(-66)
+soidu_baas.turn(45)  # Laseb artefaktist lahti
+soidu_baas.straight(-110)
+soidu_baas.turn(-20)
+soidu_baas.settings(straight_speed=1089, straight_acceleration=1200)
+soidu_baas.straight(-650)
