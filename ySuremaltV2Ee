@@ -1,0 +1,28 @@
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
+from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
+from pybricks.robotics import DriveBase
+from pybricks.tools import wait, StopWatch, hub_menu
+keskus = PrimeHub()
+"""
+Robot teeb vasakpöörde kui soidu_baas.turn() < 0, ja paremapöörde kui see on suurem kui 0.
+soidu_baas.straight() on millimeetrites
+soidu_baas.turn() on kraadides
+soidu_baas.settings(straight_speed=x, straight_acceleration=y) on maksimaalse kiiruse ja kiirenduse sättimiseks
+soidu_baas.settings(turn_rate=x, turn_acceleration=y) on maksimaalse keeramiskiirus ja -kiirenduse sättimiseks
+"""
+vaikevalitu = hub_menu("1", "2", "3", "4", "5", "6", "X")  # Valimise menüü
+if vaikevalitu == "1":
+    import zesimene
+elif vaikevalitu == "2":
+    import zteine
+elif vaikevalitu == "3":
+    import zkolmas
+elif vaikevalitu == "4":
+    import zneljas
+elif vaikevalitu == "5":
+    import zviies
+elif vaikevalitu == "6":
+    import zkuues
+elif vaikevalitu == "X":
+    import zmuud_valikud
