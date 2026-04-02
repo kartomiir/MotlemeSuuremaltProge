@@ -1,0 +1,27 @@
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
+from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
+from pybricks.robotics import DriveBase
+from pybricks.tools import wait, StopWatch
+hub = PrimeHub()
+def testkood():  # Koodi testimispaik
+    # soidu_baas.settings(straight_speed=1089, straight_acceleration=2000)
+    # soidu_baas.settings(turn_rate=500, turn_acceleration=500)
+    # soidu_baas.straight(1000)  # Testi kood 1. Mootorite ja güro testimiseks
+    # soidu_baas.turn(360) # Testi kood 2. Mootorite ja güro testimiseks
+    print("W")
+def patareikontroll():
+        print(keskus.battery.current())
+        print(keskus.battery.voltage())
+def rattapesu():  # Rattapesu
+    soidu_baas.use_gyro(False)
+    soidu_baas.settings(straight_speed=749, straight_acceleration=100)  # Aeglane kiirendus dramaatilisuseks
+    soidu_baas.straight(65535)
+
+väljavalitud = hub_menu("W", "T", "B", "X")
+if väljavalitud == "W":
+    rattapesu()
+elif väljavalitud == "T":
+    testkood()
+elif väljavalitud == "B":
+    patareikontroll()
