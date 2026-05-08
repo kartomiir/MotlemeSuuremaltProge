@@ -1,80 +1,27 @@
-    drive_base.settings(straight_speed=811, straight_acceleration=750)
-    drive_base.settings(turn_rate=811, turn_acceleration=500)
-    tool_left.run(-800)
-    wait(400)
-    tool_left.stop()
-    prh()
-    distance()
-    drive_base.straight(200)
-    drive_base.turn(42)
-    prh()
-    distance()
-    drive_base.straight(300)
-    tool_right.run(800)
-    wait(350)
-    tool_right.stop()
-    drive_base.straight(-40)
-    drive_base.turn(138)
-    prh()
-    distance()
-    left_motor.run(-615)
-    right_motor.run(-600)  # Zeroing start
-    tool_right.run(-800)
-    wait(300)
-    tool_right.stop()  # Stops moving knife down
-    wait(2800)
-    left_motor.stop() 
-    right_motor.stop()  # Zeroing end
-    drive_base.straight(40)
-    drive_base.turn(-30)
-    drive_base.straight(28)
-    drive_base.turn(-63)  # Slightly wider turn to align with artifact
-    drive_base.straight(-40)
-    tool_left.run(800)  # Artifact holder down
-    wait(450)
-    tool_left.stop()
-    drive_base.settings(straight_speed=500, straight_acceleration=250)
-    drive_base.straight(126)
-    tool_right.run(300)  # Moves minecart up with Knife
-    tool_left.run(-333)  # Artifact up so it can't fall down on the way out
-    wait(200)
-    tool_left.stop()  # Stops moving artifact up
-    wait(500)
-    tool_right.stop()
-    wait(1000)  # Hold while up
-    drive_base.settings(straight_speed=811, straight_acceleration=600)
-    drive_base.straight(-145)
-    tool_right.run(-800) # Knife down for fish
-    tool_left.run(-400)  # Artifact holder far up
-    wait(440)
-    tool_left.stop()
-    wait(50)
-    tool_right.stop()  # Letting Knife down end
-    tool_left.stop()
-    drive_base.turn(20)
-    drive_base.straight(150)
-    drive_base.turn(18)
-    drive_base.straight(275)  # Into Fish
-    drive_base.turn(8)
-    drive_base.turn(-8)
-    drive_base.straight(-15)
-    drive_base.turn(-15)
-    drive_base.turn(59)
-    tool_right.run(800)
-    tool_left.run(800)  # Lowers artifact holder
-    wait(400)
-    tool_left.stop()  # Artifact holder end
-    wait(200)
-    tool_right.stop()
-    drive_base.turn(20)
-    #drive_base.settings(straight_speed=1089, straight_acceleration=1200)
-    #drive_base.settings(turn_rate=1000, turn_acceleration=1000)
-    drive_base.turn(-35)  # Starts going back
-    drive_base.straight(-25)
-    tool_left.run(-800)  # Artifact holder up
-    wait(400)
-    tool_left.stop()  # Artifact holder end
-    drive_base.turn(-30)
-    drive_base.straight(-200)
-    drive_base.turn(80)
-    drive_base.straight(775)
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
+from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
+from pybricks.robotics import DriveBase
+from pybricks.tools import wait, StopWatch
+hub = PrimeHub()
+tool_left = Motor(Port.A)
+tool_right = Motor(Port.E)
+right_motor = Motor(Port.F)
+left_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # One motor needs to be counterclockwise for driving to work correctly.
+drive_base = DriveBase(left_motor, right_motor, wheel_diameter=62.4, axle_track=101)  # Axle track is the distance between the two points where the wheels touch the ground
+"""
+Robot makes a left turn when drive_base.turn() < 0, a right turn when it is greater than 0.
+drive_base.straight() is in millimeters.
+drive_base.turn() is in degrees.
+drive_base.settings(straight_speed=x, straight_acceleration=y) For changing max speed and acceleration
+drive_base.settings(turn_rate=x, turn_acceleration=y) For changing max turning speed and turning acceleration
+"""
+drive_base.settings(straight_speed=811, straight_acceleration=800)
+drive_base.settings(turn_rate=811, turn_acceleration=800)
+drive_base.straight(250)
+drive_base.turn(92)
+drive_base.straight(531)
+drive_base.turn(-40)
+drive_base.straight(100)
+drive_base.turn(-15)
+drive_base.straight(230)
