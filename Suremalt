@@ -50,10 +50,8 @@ def specialturn(turn):
     for beautiful0100101101100001011100100111010001101111010011110100111001000111010011110100000101010100010001010100010001010000010011000101001101001111010010110011111100001010flower in range(3):
         while hub.imu.heading() < turn - 0.4:
             drive_base.turn(1)
-            prh()
         while hub.imu.heading() > turn + 0.4:
             drive_base.turn(-1)
-            prh()
 
 def first():  # M01, M02
     """
@@ -62,7 +60,6 @@ def first():  # M01, M02
     drive_base.settings(straight_speed=811, straight_acceleration=900)
     drive_base.settings(turn_rate=811, turn_acceleration=900)
     drive_base.straight(755)
-    prh()
     drive_base.straight(-800)
 
 def third():  # M12, M10, M15 two
@@ -130,7 +127,6 @@ def fifth():  # M09, M07, M11
     """
     if tool_left.run() < 0 it goes the CORRECT way, spinning clockwise.
     """
-    prh()
     drive_base.settings(straight_speed=811, straight_acceleration=750)
     drive_base.settings(turn_rate=900, turn_acceleration=700)
     drive_base.straight(490)
@@ -152,7 +148,6 @@ def fifth():  # M09, M07, M11
     drive_base.straight(-690)  # Pulls roof back
     drive_base.use_gyro(True)
 
-
 def fourth():  # M06, M05, M08
     """
     if tool_right.run() > 0, it goes the correct way, pushing things out of its chamber.
@@ -161,7 +156,6 @@ def fourth():  # M06, M05, M08
     drive_base.settings(straight_speed=811, straight_acceleration=700)
     drive_base.settings(turn_rate=800, turn_acceleration=700)
     drive_base.straight(770)
-    prh()
     drive_base.turn(-20)  # Little movement just in case the lever doesn't move
     drive_base.turn(20)
     drive_base.straight(-85)
@@ -172,7 +166,6 @@ def fourth():  # M06, M05, M08
     drive_base.turn(-20)
     drive_base.straight(30)
     drive_base.turn(20)
-    prh()
     drive_base.straight(322)
     drive_base.turn(18)
     tool_left.run(-800)  # Moves red slider to put the structure floor upright
@@ -201,11 +194,9 @@ def second():  # M03, M04, M13, M14 three
     tool_left.run(-800)
     wait(400)
     tool_left.stop()
-    prh()
     distance()
     drive_base.straight(200)
     drive_base.turn(42)
-    prh()
     distance()
     drive_base.straight(300)
     tool_right.run(800)
@@ -213,7 +204,6 @@ def second():  # M03, M04, M13, M14 three
     tool_right.stop()
     drive_base.straight(-40)
     drive_base.turn(138)
-    prh()
     distance()
     left_motor.run(-615)
     right_motor.run(-600)  # Zeroing start
@@ -293,13 +283,8 @@ def testrun():  # Where we tested different pieces of code
     # drive_base.settings(turn_rate=500, turn_acceleration=500)
     # drive_base.straight(1000)  # Test code 1. For testing the motors and gyro.
     # drive_base.turn(360) # Test code 2. For testing the motors and gyro
-    distance()
-    prh()
     drive_base.straight(100)
-    distance()
-    prh()
     drive_base.turn(180)
-    prh()
 
 if chosen == "1":
     first()
