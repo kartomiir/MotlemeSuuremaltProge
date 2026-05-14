@@ -2,49 +2,48 @@ from pybricks.hubs import PrimeHub
 from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
 from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
 from pybricks.robotics import DriveBase
-from pybricks.tools import wait, StopWatch
+from pybricks.tools import wait, StopWatch, hub_menu
 keskus = PrimeHub()
 tooriist_vasak = Motor(Port.A)
 tooriist_parem = Motor(Port.E)
 parem_mootor = Motor(Port.F)
-vasak_mootor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # Üks mootor peab olema vastupäeva et sõitmine õigesti töötaks
-soidu_baas = DriveBase(vasak_mootor, parem_mootor, wheel_diameter=62.4, axle_track=101)  # Axle track ehk telje rööpmelaius on pikkus nende punktide vahel mis ratastel vastu maad on
+vasak_mootor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # yks mootor peab olema vastupaeva, et soitmine oigesti tootaks
+soidu_baas = DriveBase(vasak_mootor, parem_mootor, wheel_diameter=49.5, axle_track=110)  # Axle track ehk telje roopmelaius on pikkus nende punktide vahel mis ratastel vastu maad on
 """
-kui tooriist_vasak.run() < 0 Pulk läheb õiget pidi, keerutades päripäeva.
+kui tooriist_parem.run() > 0, siis tooriist laheb oiget pidi, lykates raskusklotse kambrist valja.
+kui tooriist_vasak.run() > 0 siis pulk liigub oiget pidi, pikendades robotist valja.
 """
-soidu_baas.straight(157)
-wait(303)  # Ootab et Vormel FL saaks sõita
-soidu_baas.straight(-50)
-soidu_baas.turn(75)
-soidu_baas.straight(100)
-soidu_baas.turn(-30)  # Joondub M09'ga
-soidu_baas.straight(285)
-tooriist_vasak.run(300)  # Lükkab punase pulga maha
-wait(700)
-tooriist_vasak.stop()
-soidu_baas.straight(37)  # Läheb kaugemale et pikk pulk saaks katuse taha minna
-soidu_baas.settings(straight_speed=300, straight_acceleration=200)
-soidu_baas.straight(-395)  # Tõmbab katuse tagasi
-soidu_baas.turn(-28)
-soidu_baas.settings(straight_speed=800, straight_acceleration=500)
-soidu_baas.settings(turn_rate=500, turn_acceleration=400)
-vasak_mootor.run(800)
-parem_mootor.run(800)
-tooriist_vasak.run(-300)  # Tööriist eest ära
-wait(800)
-tooriist_vasak.stop()
-vasak_mootor.stop()
-parem_mootor.stop()
-soidu_baas.turn(5)  # Väike pööre et artefakt tagasi ei lükataks
-vasak_mootor.run(400)
-parem_mootor.run(400)
-wait(1000)
-vasak_mootor.stop()
-parem_mootor.stop()
-soidu_baas.turn(-22)  # Läheb artefakti nööri taha
-soidu_baas.straight(-66)
-soidu_baas.turn(45)  # Laseb artefaktist lahti
-soidu_baas.straight(-110)
+soidu_baas.settings(straight_speed=811, straight_acceleration=700)
+soidu_baas.settings(turn_rate=800, turn_acceleration=700)
+soidu_baas.straight(770)  # Lykkab punast kangi maakide jaoks
+soidu_baas.turn(-20)  # Vaike liigutus igaks juhuks kui kang ei liikunud
+soidu_baas.turn(20)
+soidu_baas.straight(-85)
+soidu_baas.turn(-96)  # Keerab et joonduda kodu seinaga M08 ja M06 vahel
+soidu_baas.straight(-400)  # Viib maagid kodu alale
+soidu_baas.straight(50)
+bothmotors(-200, 1500)  # Nullimine
 soidu_baas.turn(-20)
-soidu_baas.settings(straight_speed=1089, straight_acceleration=1200)
-soidu_baas.straight(-650)
+soidu_baas.straight(30)
+soidu_baas.turn(20)
+soidu_baas.straight(322)
+soidu_baas.turn(18)
+tooriist_vasak.run(-800)  # Liigutab punast liugurit et hoone porandat tosta
+wait(425)
+tooriist_vasak.stop()
+wait(100)
+soidu_baas.straight(55)  # Lykkab punast liugurit
+soidu_baas.turn(-14)
+soidu_baas.straight(22)
+soidu_baas.straight(-5)  # Laheb natuke edasi et see ei laheks M08le liiga lahedale
+soidu_baas.turn(88)
+tooriist_vasak.run(800)  # Tombab retraktori tagasi sisse
+wait(425)
+tooriist_vasak.stop()
+soidu_baas.straight(-259)
+tooriist_parem.run(125)  # Kukutab raskusklotsid
+wait(4000)
+tooriist_parem.stop()
+soidu_baas.settings(straight_speed=811)
+soidu_baas.turn(-25)
+soidu_baas.straight(-544)
