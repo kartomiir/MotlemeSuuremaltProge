@@ -9,13 +9,6 @@ tool_right = Motor(Port.E)
 right_motor = Motor(Port.F)
 left_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # One motor needs to be counterclockwise for driving to work correctly.
 drive_base = DriveBase(left_motor, right_motor, wheel_diameter=62.4, axle_track=101)  # Axle track is the distance between the two points where the wheels touch the ground
-"""
-Robot makes a left turn when drive_base.turn() < 0, a right turn when it is greater than 0.
-drive_base.straight() is in millimeters.
-drive_base.turn() is in degrees.
-drive_base.settings(straight_speed=x, straight_acceleration=y) For changing max speed and acceleration
-drive_base.settings(turn_rate=x, turn_acceleration=y) For changing max turning speed and turning acceleration
-"""
 drive_base.settings(straight_speed=811, straight_acceleration=800)
 drive_base.settings(turn_rate=811, turn_acceleration=800)
 drive_base.straight(250)
@@ -24,4 +17,4 @@ drive_base.straight(531)
 drive_base.turn(-40)
 drive_base.straight(100)
 drive_base.turn(-15)
-drive_base.straight(230)  # END OF ROBOT GAME
+drive_base.straight(230)  # Flag delivered
