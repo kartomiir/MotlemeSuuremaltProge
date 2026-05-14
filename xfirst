@@ -11,11 +11,9 @@ left_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # One motor needs to be 
 drive_base = DriveBase(left_motor, right_motor, wheel_diameter=62.4, axle_track=101)  # Axle track is the distance between the two points where the wheels touch the ground
 drive_base.use_gyro(True)  # Gyro works
 """
-if tool_left.run() > 0 then the forklift moves down and vice versa
-if tool_right.run() > 0 then the yellow thingymajig moves down and vice versa
+Fully mechanical, no motors needed except those that are for driving
 """
 drive_base.settings(straight_speed=811, straight_acceleration=900)
 drive_base.settings(turn_rate=811, turn_acceleration=900)
 drive_base.straight(755)
-prh()
 drive_base.straight(-800)
