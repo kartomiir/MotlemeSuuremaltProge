@@ -15,38 +15,23 @@ right_motor.run(speed)
 wait(time)
 left_motor.stop()
 right_motor.stop()
-"""
-Robot makes a left turn when drive_base.turn() < 0, a right turn when it is greater than 0.
-drive_base.straight() is in millimeters.
-drive_base.turn() is in degrees.
-drive_base.settings(straight_speed=x, straight_acceleration=y) For changing max speed and acceleration
-drive_base.settings(turn_rate=x, turn_acceleration=y) For changing max turning speed and turning acceleration
-"""
 drive_base.use_gyro(True)  # Gyro works
-"""
-if tool_right.run() > 0, it goes the correct way, pushing things out of its chamber.
-if tool_left.run() > 0 the tool goes the correct way, extending out of the robot.
-"""
 """
 if tool_left.run() < 0 it goes the CORRECT way, spinning clockwise.
 """
 drive_base.settings(straight_speed=811, straight_acceleration=750)
 drive_base.settings(turn_rate=900, turn_acceleration=700)
-drive_base.straight(490)
-drive_base.turn(5)
-drive_base.straight(70)
-drive_base.turn(-15)
-drive_base.straight(-80)
-drive_base.turn(20)
-drive_base.straight(-15)
-drive_base.turn(-10)
-drive_base.straight(-380)
-drive_base.turn(45)
-drive_base.straight(370)
+drive_base.straight(157)
+wait(150)  # Waits so the formula FL can drive
+drive_base.straight(-50)
+drive_base.turn(75)
+drive_base.straight(100)
+drive_base.turn(-30)  # Aligns with M09
+drive_base.straight(288)
 tool_left.run(300)  # Knocks red pin down
 wait(800)
 tool_left.stop()
-drive_base.straight(25)
+drive_base.straight(25)  # Goes further so the long stick can go behind the roof
 drive_base.use_gyro(False)
 drive_base.straight(-690)  # Pulls roof back
 drive_base.use_gyro(True)
