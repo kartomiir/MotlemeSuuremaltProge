@@ -1,40 +1,50 @@
-   """
-    if tool_right.run() > 0, it goes the correct way, pushing things out of its chamber.
-    if tool_left.run() > 0 the tool goes the correct way, extending out of the robot.
-    """
-    drive_base.settings(straight_speed=811, straight_acceleration=700)
-    drive_base.settings(turn_rate=800, turn_acceleration=700)
-    drive_base.straight(770)
-    prh()
-    drive_base.turn(-20)  # Little movement just in case the lever doesn't move
-    drive_base.turn(20)
-    drive_base.straight(-85)
-    drive_base.turn(-96)  # Turns to go align with the home wall between M08 and M06
-    drive_base.straight(-400)  # Gets ore blocks to home area
-    drive_base.straight(50)
-    bothmotors(-200, 1500)  # Zeroing
-    drive_base.turn(-20)
-    drive_base.straight(30)
-    drive_base.turn(20)
-    prh()
-    drive_base.straight(322)
-    drive_base.turn(18)
-    tool_left.run(-800)  # Moves red slider to put the structure floor upright
-    wait(425)
-    tool_left.stop()
-    wait(100)
-    drive_base.straight(55)
-    drive_base.turn(-14)
-    drive_base.straight(22)
-    drive_base.straight(-5)  # Goes a little forward so it wouldn't align too close to M08
-    drive_base.turn(88)
-    tool_left.run(800)
-    wait(425)
-    tool_left.stop()
-    drive_base.straight(-259)
-    tool_right.run(125)  # Drops weight pieces.
-    wait(4000)
-    tool_right.stop()
-    drive_base.settings(straight_speed=811)
-    drive_base.turn(-25)
-    drive_base.straight(-544)
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
+from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
+from pybricks.robotics import DriveBase
+from pybricks.tools import wait, StopWatch
+hub = PrimeHub()
+tool_left = Motor(Port.A)
+tool_right = Motor(Port.E)
+right_motor = Motor(Port.F)
+left_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # One motor needs to be counterclockwise for driving to work correctly.
+drive_base = DriveBase(left_motor, right_motor, wheel_diameter=62.4, axle_track=101)  # Axle track is the distance between the two points where the wheels touch the ground
+drive_base.use_gyro(True)  # Gyro works
+"""
+if tool_right.run() > 0, it goes the correct way, pushing things out of its chamber.
+if tool_left.run() > 0 the tool goes the correct way, extending out of the robot.
+"""
+drive_base.settings(straight_speed=811, straight_acceleration=700)
+drive_base.settings(turn_rate=800, turn_acceleration=700)
+drive_base.straight(770)
+drive_base.turn(-20)  # Little movement just in case the lever doesn't move
+drive_base.turn(20)
+drive_base.straight(-85)
+drive_base.turn(-96)  # Turns to go align with the home wall between M08 and M06
+drive_base.straight(-400)  # Gets ore blocks to home area
+drive_base.straight(50)
+bothmotors(-200, 1500)  # Zeroing
+drive_base.turn(-20)
+drive_base.straight(30)
+drive_base.turn(20)
+drive_base.straight(322)
+drive_base.turn(18)
+tool_left.run(-800)  # Moves red slider to put the structure floor upright
+wait(425)
+tool_left.stop()
+wait(100)
+drive_base.straight(55)  # Pushes red slider
+drive_base.turn(-14)
+drive_base.straight(22)
+drive_base.straight(-5)  # Goes a little forward so it wouldn't align too close to M08
+drive_base.turn(88)
+tool_left.run(800)  # Pulls retractor back in
+wait(425)
+tool_left.stop()
+drive_base.straight(-259)
+tool_right.run(125)  # Drops weight pieces.
+wait(4000)
+tool_right.stop()
+drive_base.settings(straight_speed=811)
+drive_base.turn(-25)
+drive_base.straight(-544)
