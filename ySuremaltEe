@@ -7,361 +7,282 @@ keskus = PrimeHub()
 tooriist_vasak = Motor(Port.A)
 tooriist_parem = Motor(Port.E)
 parem_mootor = Motor(Port.F)
-vasak_mootor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # Üks mootor peab olema vastupäeva et sõitmine õigesti töötaks
-soidu_baas = DriveBase(vasak_mootor, parem_mootor, wheel_diameter=62.4, axle_track=101)  # Axle track ehk telje rööpmelaius on pikkus nende punktide vahel mis ratastel vastu maad on
+vasak_mootor = Motor(Port.B, Direction.COUNTERCLOCKWISE)  # yks mootor peab olema vastupaeva, et soitmine oigesti tootaks
+soidu_baas = DriveBase(vasak_mootor, parem_mootor, wheel_diameter=49.5, axle_track=110)  # Axle track ehk telje roopmelaius on pikkus nende punktide vahel mis ratastel vastu maad on
 """
-Robot teeb vasakpöörde kui soidu_baas.turn() < 0, ja paremapöörde kui see on suurem kui 0.
+Robot teeb vasakpoorde kui soidu_baas.turn() < 0, ja paremapoorde kui see on suurem kui 0.
 soidu_baas.straight() on millimeetrites
 soidu_baas.turn() on kraadides
-soidu_baas.settings(straight_speed=x, straight_acceleration=y) on maksimaalse kiiruse ja kiirenduse sättimiseks
-soidu_baas.settings(turn_rate=x, turn_acceleration=y) on maksimaalse keeramiskiirus ja -kiirenduse sättimiseks
+soidu_baas.settings(straight_speed=x, straight_acceleration=y) on maksimaalse kiiruse ja kiirenduse sattimiseks
+soidu_baas.settings(turn_rate=x, turn_acceleration=y) on maksimaalse keeramiskiirus ja -kiirenduse sattimiseks
 """
-soidu_baas.use_gyro(True)  # Güro töötab
+soidu_baas.use_gyro(True)  # Gyro tootab
 def molemadmootorid(kiirus, aeg):
     vasak_mootor.run(kiirus)
     parem_mootor.run(kiirus)
     wait(aeg)
     vasak_mootor.stop()
     parem_mootor.stop()
-valitud = hub_menu("1", "2", "3", "4", "5", "6", "X")  # Valimis menüü
+valitud = keskus_menu("1", "2", "3", "4", "5", "6", "X")  # Valimis menyy
 def prh():  # PRH: Piki, Rull ja Suund. Mainly used for controlling the turning.
-    heading = keskus.imu.heading()  # Roboti vasak ja parem kraadides
-    pitch, roll = keskus.imu.tilt()
-    print(pitch, roll, heading)
+    suund = keskus.imu.heading()  # Roboti vasak ja parem kraadides
+    piki, rull = keskus.imu.tilt()
+    print(piki, rull, suund)
+def distants():
+    print(soidu_baas.distance())
 def patareikontroll():
-        print(keskus.battery.current())
+    pinge = keskus.battery.voltage()
+    vool = keskus.battery.current()
+    for number in range(6):
+        print(keskus.battery.current())  # Prindib konsooli
         print(keskus.battery.voltage())
-def rattapesu():  # Rattapesu
-    soidu_baas.use_gyro(False)
+        keskus.display.text(text=f"{pinge}", on=500, off=50)  # Naitab keskusel
+        wait(3000)
+
+def rattapesu():  # Rattapesuks
+    soidu_baas.use_gyro(False)  # Gyro maha jarjekindlaks kiiruseks
     soidu_baas.settings(straight_speed=749, straight_acceleration=100)  # Aeglane kiirendus dramaatilisuseks
     soidu_baas.straight(65535)
 
+def erilinepoore(poore):
+    """
+    Keerab kuni poore on tais. Test programm, et proovida robotit jarjekindlamaks teha.
+    """
+    soidu_baas.settings(turn_rate=800, turn_acceleration=800)
+    soidu_baas.turn(poore - keskus.imu.heading())
+    for beautiful0100101101100001011100100111010001101111010011110100111001000111010011110100000101010100010001010100010001010000010011000101001101001111010010110011111100001010flower in range(3):
+        while keskus.imu.heading() < poore - 0.4:
+            soidu_baas.turn(1)
+        while keskus.imu.heading() > poore + 0.4:
+            soidu_baas.turn(-1)
+
 def esimene():  # M01, M02
     """
-    kui tooriist_vasak.run() > 0 siis tõstuk liigub alla ja vastupidi
-    kui tooriist_parem.run() > 0 siis kollane asi liigub alla ja vastupidi
+    Taiesti mehhaaniline, pole mootoreid vaja peale soidumootorite.
     """
-    soidu_baas.settings(straight_speed=600, straight_acceleration=450)
-    soidu_baas.settings(turn_rate=750, turn_acceleration=700)
-    tooriist_vasak.run(-800)
-    tooriist_parem.run(-800)
-    wait(550)
-    tooriist_vasak.stop()
-    wait(100)
-    tooriist_parem.stop()
-    soidu_baas.straight(644)
-    tooriist_vasak.run(800)  # Tõstuk alla harja löömiseks
-    wait(240)
-    tooriist_vasak.stop()
-    soidu_baas.settings(turn_rate=300, turn_acceleration=500)
-    soidu_baas.turn(-135)  # Alustab harja löömist
-    soidu_baas.turn(88)
-    # soidu_baas.turn(-90)  # Lisa harja löögid kui robot ebastabiilne on
-    # soidu_baas.turn(88)  # Viimane harja löök
-    tooriist_vasak.run(-800)
-    wait(400)
-    tooriist_vasak.stop()
-    soidu_baas.settings(turn_rate=750, turn_acceleration=850)
-    soidu_baas.turn(-43)  # Joondab tõstuki harjaga
-    soidu_baas.straight(-10)
-    wait(50)
-    tooriist_vasak.run(800)  # Alustab harja ülesvõtmist
-    wait(510)
-    tooriist_vasak.stop()
-    tooriist_vasak.run(-800)
-    wait(950)
-    tooriist_vasak.stop()  # Lõpetab harja ülesvõtmist
-    soidu_baas.straight(-18)
-    soidu_baas.settings(turn_rate=500, turn_acceleration=500)
-    soidu_baas.turn(90)
-    soidu_baas.straight(-36)
-    soidu_baas.turn(-45)  # Lõpetab joondumise M02-ga
-    soidu_baas.settings(straight_speed=500, straight_acceleration=400)
-    soidu_baas.straight(246)  # Kaardid
-    tooriist_parem.run(800)
-    wait(425)
-    tooriist_parem.stop()
-    soidu_baas.straight(51.5)  # Lükkab kahte kaarti
-    soidu_baas.straight(-10)
-    tooriist_parem.run(-800)
-    wait(425)
-    tooriist_parem.stop()
-    soidu_baas.turn(-20)  # Keerab, et viimane kaart kaasa haarata
-    soidu_baas.settings(turn_rate=1089, turn_acceleration=1200)
-    soidu_baas.settings(straight_speed=1089, straight_acceleration=1200)
-    soidu_baas.straight(-270)
-    soidu_baas.turn(-95)
-    soidu_baas.straight(750)  # Läheb tagasi baasi
+    soidu_baas.settings(straight_speed=811, straight_acceleration=900)
+    soidu_baas.settings(turn_rate=811, turn_acceleration=900)
+    soidu_baas.straight(755)
+    soidu_baas.straight(-800)
 
 def kolmas():  # M12, M10, M15 kaks
     """
-    kui tooriist_vasak.run() > 0 siis tõstuk liigub alla ja vastupidi
+    kui tooriist_vasak.run() > 0 siis tostuk liigub alla ja vastupidi
     kui tooriist_parem.run() > 0 siis kollane liiguks alla ja vastupidi
     """
-    #tooriist_vasak.run(1800)  # Tõstuk vajutab motikal nuppu
-    #tooriist_parem.run(-800)
-    #wait(530)
-    #tooriist_vasak.run(100)  # tõstuk lõpetab alla minemise
-    #wait(110)  # Kollane asi liigub edasi
-    #tooriist_vasak.stop()
-    #tooriist_parem.stop()
-    #wait(150)  # Mootorite paus
-    #tooriist_vasak.run(-800)  # Liigutab tõstukit üles tagasi
-    #wait(900)
-    #tooriist_vasak.stop()
-    ainuvalik = hub_menu("0", "X")  # Paus kuni järgmise vajutuseni et Pickaxe peale panna
+    tooriist_vasak.run(1000)  # Tostuk vajutab motikal nuppu
+    tooriist_parem.run(-800)
+    wait(585)
+    tooriist_vasak.stop()  # tostuk lopetab alla minemise
+    wait(45)  # Kollane asi liigub edasi
+    tooriist_parem.stop()
+    wait(150)  # Mootorite paus
+    tooriist_vasak.run(-800)  # Liigutab tostukit yles tagasi
+    wait(900)
+    tooriist_vasak.stop()
+    ainuvalik = hub_menu("0", "X")  # Paus kuni jargmise vajutuseni et Pickaxe peale panna
     if ainuvalik == "0":
         soidu_baas.settings(straight_speed=800, straight_acceleration=800)
         soidu_baas.straight(100)
-        soidu_baas.turn(5)  # Joondus M12 jaoks
+        soidu_baas.turn(4)  # Joondus M12 jaoks
         soidu_baas.straight(150)
         soidu_baas.settings(straight_speed=350, straight_acceleration=400)
         soidu_baas.straight(200)
-        soidu_baas.turn(4)
-        soidu_baas.straight(85)  # Lõpetab paadi liigutamise
-        tooriist_parem.run(800)  # Kollane asi alla et punane asi tagasi tõmmata
+        soidu_baas.turn(2)  
+        soidu_baas.straight(85)  # Lopetab paadi liigutamise
+        tooriist_parem.run(800)  # Kollane asi alla et punane asi tagasi tommata
         tooriist_vasak.run(800)  # Paneb lipu maha
         wait(615)
         tooriist_vasak.stop()
-        wait(25)  # Kollane läheb edasi
+        wait(25)  # Kollane laheb edasi
         tooriist_parem.stop()
         soidu_baas.turn(-10)
         soidu_baas.settings(straight_speed=200, straight_acceleration=200)
         soidu_baas.straight(-78)
-        tooriist_parem.run(-800)
+        tooriist_parem.run(-800)  # Kollane yles
         wait(570)
         tooriist_parem.stop()
         soidu_baas.settings(straight_speed=800, straight_acceleration=800)
         soidu_baas.settings(turn_rate=750, turn_acceleration=800)
         soidu_baas.turn(8)
         soidu_baas.straight(-50)
-        soidu_baas.turn(-42)  # Joondus M10 jaoks
-        tooriist_vasak.run(-800)
+        soidu_baas.turn(-41)  # Joondus M10 jaoks
+        tooriist_vasak.run(-800)  # Tostuk yles
         wait(540)
         tooriist_vasak.stop()
         soidu_baas.straight(695)
-        tooriist_vasak.run(800)  # Kaal
+        tooriist_vasak.run(800)  # Lykkab korvi alla
         wait(570)
         tooriist_vasak.stop()
-        soidu_baas.straight(-183)
-        soidu_baas.turn(60)
+        soidu_baas.straight(-183)  
+        soidu_baas.turn(60)  # Joondub M10 jaoks
         soidu_baas.settings(turn_rate=300, turn_acceleration=150)
-        soidu_baas.straight(156)
-        soidu_baas.settings(straight_speed=1089, straight_acceleration=2000)
-        soidu_baas.turn(-33)  # Keerab kaalukausile sisse
-        soidu_baas.turn(18)
-        soidu_baas.straight(-23)  # Tagurdab et roboti keeramistee joonduks kaalukausiga
-        soidu_baas.turn(30)
+        soidu_baas.straight(158)
+        soidu_baas.settings(straight_speed=811, straight_acceleration=2000)
+        soidu_baas.turn(-31)  # Keerab kaalukausile sisse
+        soidu_baas.turn(16)  # Hakkab kaalu valja tombama
+        soidu_baas.straight(-22)  # Tagurdab, et joonduda roboti pooramistrajektoori kaalukausiga
+        soidu_baas.turn(30)  # Kaalukauss valja
         soidu_baas.turn(-20)
-        soidu_baas.straight(800)  # Edasi teise baasi
+        soidu_baas.straight(800)  # Tagasi baasi
 
-def neljas():  # M09, M07, M11
+def viies():  # M09, M07, M11
     """
-    kui tooriist_vasak.run() < 0 Pulk läheb õiget pidi, keerutades päripäeva.
+    kui tooriist_vasak.run() < 0 Pulk laheb oiget pidi, keerutades paripaeva.
     """
+    soidu_baas.settings(straight_speed=811, straight_acceleration=750)
+    soidu_baas.settings(turn_rate=900, turn_acceleration=700)
     soidu_baas.straight(157)
-    wait(303)  # Ootab et Vormel FL saaks sõita
+    wait(150)  # Ootab et Vormel FL saaks soita
     soidu_baas.straight(-50)
     soidu_baas.turn(75)
     soidu_baas.straight(100)
-    soidu_baas.turn(-30)  # Joondub M09'ga
-    soidu_baas.straight(285)
-    tooriist_vasak.run(300)  # Lükkab punase pulga maha
-    wait(700)
-    tooriist_vasak.stop()
-    soidu_baas.straight(37)  # Läheb kaugemale et pikk pulk saaks katuse taha minna
-    soidu_baas.settings(straight_speed=300, straight_acceleration=200)
-    soidu_baas.straight(-395)  # Tõmbab katuse tagasi
-    soidu_baas.turn(-28)
-    soidu_baas.settings(straight_speed=800, straight_acceleration=500)
-    soidu_baas.settings(turn_rate=500, turn_acceleration=400)
-    vasak_mootor.run(800)
-    parem_mootor.run(800)
-    tooriist_vasak.run(-300)  # Tööriist eest ära
+    soidu_baas.turn(-30)  # Joondub M09 jaoks
+    soidu_baas.straight(288)
+    tooriist_vasak.run(300)  # Lykkab punase pulga maha
     wait(800)
     tooriist_vasak.stop()
-    vasak_mootor.stop()
-    parem_mootor.stop()
-    soidu_baas.turn(5)  # Väike pööre et artefakt tagasi ei lükataks
-    vasak_mootor.run(400)
-    parem_mootor.run(400)
-    wait(1000)
-    vasak_mootor.stop()
-    parem_mootor.stop()
-    soidu_baas.turn(-22)  # Läheb artefakti nööri taha
-    soidu_baas.straight(-66)
-    soidu_baas.turn(45)  # Laseb artefaktist lahti
-    soidu_baas.straight(-110)
-    soidu_baas.turn(-20)
-    soidu_baas.settings(straight_speed=1089, straight_acceleration=1200)
-    soidu_baas.straight(-650)
+    soidu_baas.straight(25)  # Laheb kaugemale et pikk pulk saaks katuse taha minna
+    soidu_baas.use_gyro(False)
+    soidu_baas.straight(-690)  # Tombab katuse tagasi
+    soidu_baas.use_gyro(True)
 
-def viies():  # M06, M05, M08
+def neljas():  # M06, M05, M08
     """
-    kui tooriist_parem.run() > 0, siis tööriist läheb õiget pidi, lükates raskusklotse kambrist välja.
-    kui tooriist_vasak.run() > 0 siis pulk liigub õiget pidi, pikendades robotist välja.
+    kui tooriist_parem.run() > 0, siis tooriist laheb oiget pidi, lykates raskusklotse kambrist valja.
+    kui tooriist_vasak.run() > 0 siis pulk liigub oiget pidi, pikendades robotist valja.
     """
-    soidu_baas.settings(straight_speed=700, straight_acceleration=550)
-    soidu_baas.settings(turn_rate=800, turn_acceleration=500)
-    soidu_baas.straight(252.5)
-    soidu_baas.turn(-6)  # Natuke vasakule maagi kangi jaoks
-    soidu_baas.straight(191)
-    soidu_baas.turn(6)
-    soidu_baas.straight(340)  # Lükkab punast kangi maakide jaoks
-    soidu_baas.turn(-20)  # Väike liigutus igaks juhuks kui kang ei liikunud
+    soidu_baas.settings(straight_speed=811, straight_acceleration=700)
+    soidu_baas.settings(turn_rate=800, turn_acceleration=700)
+    soidu_baas.straight(770)  # Lykkab punast kangi maakide jaoks
+    soidu_baas.turn(-20)  # Vaike liigutus igaks juhuks kui kang ei liikunud
     soidu_baas.turn(20)
-    soidu_baas.straight(-95)
-    soidu_baas.turn(-98)  # Keerab et joonduda kodu seinaga M08 ja M06 vahel
+    soidu_baas.straight(-85)
+    soidu_baas.turn(-96)  # Keerab et joonduda kodu seinaga M08 ja M06 vahel
     soidu_baas.straight(-400)  # Viib maagid kodu alale
     soidu_baas.straight(50)
-    molemadmootorid(-400, 750)  # Nullimine
-    soidu_baas.straight(15)
+    bothmotors(-200, 1500)  # Nullimine
     soidu_baas.turn(-20)
-    soidu_baas.straight(65)
+    soidu_baas.straight(30)
     soidu_baas.turn(20)
-    soidu_baas.straight(298)
-    soidu_baas.turn(14)
-    tooriist_vasak.run(-800)  # Liigutab punast liugurit et hoone põrandat tõsta
+    soidu_baas.straight(322)
+    soidu_baas.turn(18)
+    tooriist_vasak.run(-800)  # Liigutab punast liugurit et hoone porandat tosta
     wait(425)
     tooriist_vasak.stop()
     wait(100)
-    soidu_baas.straight(30)
-    soidu_baas.turn(-10)
+    soidu_baas.straight(55)  # Lykkab punast liugurit
+    soidu_baas.turn(-14)
     soidu_baas.straight(22)
-    tooriist_vasak.run(800)
+    soidu_baas.straight(-5)  # Laheb natuke edasi et see ei laheks M08le liiga lahedale
+    soidu_baas.turn(88)
+    tooriist_vasak.run(800)  # Tombab retraktori tagasi sisse
     wait(425)
     tooriist_vasak.stop()
-    soidu_baas.straight(10)  # Läheb natuke edasi et see ei läheks M08le liiga lähedale
-    soidu_baas.turn(88)
-    soidu_baas.straight(-278)
+    soidu_baas.straight(-259)
     tooriist_parem.run(125)  # Kukutab raskusklotsid
     wait(4000)
     tooriist_parem.stop()
-    soidu_baas.settings(straight_speed=1089)
+    soidu_baas.settings(straight_speed=811)
     soidu_baas.turn(-25)
-    soidu_baas.straight(-500) # Tagasi baasi
+    soidu_baas.straight(-544)
 
-def teine():  # M03, M04, M13
-    soidu_baas.settings(straight_speed=800, straight_acceleration=600)
-    soidu_baas.settings(turn_rate=800, turn_acceleration=700)
-    tooriist_parem.run(800)
+def teine():  # M03, M04, M13, M14 kolm
+    soidu_baas.settings(straight_speed=811, straight_acceleration=750)
+    soidu_baas.settings(turn_rate=811, turn_acceleration=500)
     tooriist_vasak.run(-800)
-    wait(250)
-    tooriist_parem.stop()
-    wait(150)
-    tooriist_vasak.stop()
-    soidu_baas.straight(400)
-    soidu_baas.turn(33)
-    soidu_baas.straight(260)
-    soidu_baas.turn(147)
-    parem_mootor.run(-500)  # Nullimise algus
-    vasak_mootor.run(-500)
-    tooriist_parem.run(-800)  # Nuga koos ratastega
-    wait(250)
-    tooriist_parem.stop()  # Lõpetab noa alla liigutamise
-    wait(2750)
-    parem_mootor.stop()
-    vasak_mootor.stop()  # Nullimise lõpp
-    soidu_baas.straight(20)
-    soidu_baas.turn(-30)
-    soidu_baas.straight(20)
-    soidu_baas.turn(-62)  # Natuke laiem pööre et joonduda artefaktiga
-    soidu_baas.straight(-30)
-    tooriist_vasak.run(800)  # Artefakti hoidja alla
     wait(400)
     tooriist_vasak.stop()
+    distance()
+    soidu_baas.straight(200)
+    soidu_baas.turn(42)
+    distance()
+    soidu_baas.straight(300)
+    tooriist_parem.run(800)  # Jatab kaks foorumlast maha
+    wait(350)
+    tooriist_parem.stop()
+    soidu_baas.straight(-40)
+    soidu_baas.turn(138)  # Tagaots ees
+    distance()
+    vasak_mootor.run(-615)  # Nullimise algus
+    parem_mootor.run(-600)
+    tooriist_parem.run(-800)  # Nuga alla
+    wait(300)
+    tooriist_parem.stop()
+    wait(2800)
+    vasak_mootor.stop() 
+    parem_mootor.stop()  # Nullimise lopp
+    soidu_baas.straight(40)
+    soidu_baas.turn(-30)
+    soidu_baas.straight(28)
+    soidu_baas.turn(-63)  # Natuke laiem poore et joonduda artefaktiga
+    soidu_baas.straight(-40)
+    tooriist_vasak.run(800)  # Artefakti hoidja alla
+    wait(450)
+    tooriist_vasak.stop()
     soidu_baas.settings(straight_speed=500, straight_acceleration=250)
-    soidu_baas.straight(140)
-    tooriist_parem.run(400)  # Liigutab käru noaga
-    tooriist_vasak.run(-250)  # Artefakt üles et see ei saaks alla kukkuda teel välja
-    wait(100)
-    tooriist_vasak.stop()  # Lõpetab artefakti üles liigutamise
-    wait(480)
+    soidu_baas.straight(126)
+    tooriist_parem.run(300)  # Liigutab karu noaga
+    tooriist_vasak.run(-325)  # Artefakt yles et see ei saaks alla kukkuda teel valja
+    wait(200)
+    tooriist_vasak.stop()  # Lopetab artefakti yles liigutamise
+    wait(500)
     tooriist_parem.stop()
-    wait(1000)  # Hoiab nuga üleval
-    soidu_baas.settings(straight_speed=800, straight_acceleration=600)
-    soidu_baas.straight(-140)
+    wait(1000)  # Hoiab nuga yleval
+    soidu_baas.settings(straight_speed=811, straight_acceleration=600)
+    soidu_baas.straight(-145)
     tooriist_parem.run(-800) # Nuga alla kala jaoks
-    tooriist_vasak.run(-400)  # Artefakti hoidja kõrgele üles
-    wait(200)
+    tooriist_vasak.run(-400)  # Artefakti hoidja korgele yles
+    wait(440)
     tooriist_vasak.stop()
-    wait(290)
-    tooriist_parem.stop()  # Lõpetab noa alla laskmise
+    wait(50)
+    tooriist_parem.stop()  # Lopetab noa alla laskmise
     tooriist_vasak.stop()
-    soidu_baas.turn(20)
+    soidu_baas.turn(19.8)
     soidu_baas.straight(150)
-    soidu_baas.turn(21)
-    tooriist_parem.run(130)  # Kala seadistus
-    wait(200)
+    soidu_baas.turn(18)
+    soidu_baas.straight(275)  # Kalale sisse
+    tooriist_parem.run(800)  # ornalt loob kala
+    wait(300)
     tooriist_parem.stop()
-    soidu_baas.straight(99)
-    soidu_baas.turn(-4)  # Natuke vasakule et kalaga joonduda
-    soidu_baas.straight(94)
-    tooriist_parem.run(130)  # Kala
-    wait(2700)
+    soidu_baas.straight(-15)
+    soidu_baas.turn(-10)  # Vaikselt lykkab kala
+    soidu_baas.turn(54)
+    tooriist_parem.run(800)
+    tooriist_vasak.run(800)  # Artefakti hoidja alla
+    wait(300)
     tooriist_parem.stop()
-    soidu_baas.settings(straight_speed=1089, straight_acceleration=1200)
-    soidu_baas.settings(turn_rate=1089, turn_acceleration=1200)
-    soidu_baas.turn(-4)
-    soidu_baas.straight(-227)  # Alustab tagasi minemist
-    soidu_baas.turn(82)
-    soidu_baas.straight(750)
+    wait(100)
+    tooriist_vasak.stop()  # Artefakti hoidja lopp
+    soidu_baas.turn(20)
+    #soidu_baas.settings(straight_speed=1089, straight_acceleration=1200)
+    #soidu_baas.settings(turn_rate=1000, turn_acceleration=1000)
+    soidu_baas.turn(-35)  # Alustab tagasi minemist
+    soidu_baas.straight(-25)
+    tooriist_vasak.run(-800)  # Artefakti hoidja yles
+    wait(400)
+    tooriist_vasak.stop()  # Artefakti hoidja lopp
+    soidu_baas.turn(-30)
+    soidu_baas.straight(-200)
+    soidu_baas.turn(80)
+    soidu_baas.straight(775)
 
-def kuues():  # M14, M15 üks
-    soidu_baas.settings(straight_speed=600, straight_acceleration=400)
-    soidu_baas.settings(turn_rate=400, turn_acceleration=300)
+def kuues():  # M15 yks
+    soidu_baas.settings(straight_speed=811, straight_acceleration=800)
+    soidu_baas.settings(turn_rate=811, turn_acceleration=800)
     soidu_baas.straight(250)
     soidu_baas.turn(92)
     soidu_baas.straight(531)
     soidu_baas.turn(-40)
     soidu_baas.straight(100)
     soidu_baas.turn(-15)
-    soidu_baas.straight(125)
-    tooriist_parem.run(-800)  # Liigutab kasti üles, eest ära
-    wait(200)
-    tooriist_parem.stop()
-    soidu_baas.straight(101)
-    tooriist_vasak.run(400)  # Laseb lipu alla ja saab käru vastastiimilt
-    wait(600)
-    tooriist_vasak.stop()
-    tooriist_parem.run(800)  # Kast tagasi alla
-    wait(200)
-    tooriist_parem.stop()
-    soidu_baas.straight(-40)
-    soidu_baas.turn(-15)
-    soidu_baas.straight(30)
-    soidu_baas.turn(-10)
-    soidu_baas.straight(425)
-    soidu_baas.turn(-10)
-    soidu_baas.straight(44)  # Vaevu läheb M04 mööda et 10 punkti ei kaotaks
-    soidu_baas.turn(-17)
-    soidu_baas.straight(192)
-    soidu_baas.turn(-38)  # Kalast mööda et see seda tagasi alla ei laseks
-    soidu_baas.straight(140)
-    tooriist_parem.run(-800)  # Foorumi kast üles
-    wait(400)
-    tooriist_parem.stop()
-    wait(150)  # Mootorite paus
-    tooriist_parem.run(800)  # Kast alla et käru saaks sellest mööda minna
-    tooriist_vasak.run(-600)  # Paneb käru alla
-    wait(400)
-    tooriist_vasak.stop()
-    tooriist_parem.stop()
-    wait(400)  # Mootorite paus
-    tooriist_vasak.run(600)
-    tooriist_parem.run(-800)
-    wait(400)  # Tööriistad tagasi üles
-    tooriist_vasak.stop()
-    tooriist_parem.stop()
-    soidu_baas.straight(-150)  # Foorumist välja
-    soidu_baas.turn(8)
-    soidu_baas.straight(-50)
+    soidu_baas.straight(230)  # Lipp kohal
 
 def testkood():  # Koodi testimispaik
     # soidu_baas.settings(straight_speed=1089, straight_acceleration=2000)
     # soidu_baas.settings(turn_rate=500, turn_acceleration=500)
-    # soidu_baas.straight(1000)  # Testi kood 1. Mootorite ja güro testimiseks
-    # soidu_baas.turn(360) # Testi kood 2. Mootorite ja güro testimiseks
+    # soidu_baas.straight(1000)  # Testi kood 1. Mootorite ja gyro testimiseks
+    # soidu_baas.turn(360) # Testi kood 2. Mootorite ja gyro testimiseks
     print("W")
 
 if valitud == "1":
@@ -377,10 +298,10 @@ elif valitud == "5":
 elif valitud == "6":
     kuues()
 elif valitud == "X":
-    väljavalitud = hub_menu("W", "T", "B", "X")
-    if väljavalitud == "W":
+    elitaarne = keskus_menu("W", "T", "B", "X")
+    if elitaarne == "W":
         rattapesu()
-    elif väljavalitud == "T":
+    elif elitaarne == "T":
         testkood()
-    elif väljavalitud == "B":
+    elif elitaarne == "B":
         patareikontroll()
