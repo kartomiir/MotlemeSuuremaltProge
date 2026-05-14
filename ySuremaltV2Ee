@@ -8,10 +8,10 @@ keskus = PrimeHub()
 Robot teeb vasakpöörde kui soidu_baas.turn() < 0, ja paremapöörde kui see on suurem kui 0.
 soidu_baas.straight() on millimeetrites
 soidu_baas.turn() on kraadides
-soidu_baas.settings(straight_speed=x, straight_acceleration=y) on maksimaalse kiiruse ja kiirenduse sättimiseks
-soidu_baas.settings(turn_rate=x, turn_acceleration=y) on maksimaalse keeramiskiirus ja -kiirenduse sättimiseks
+soidu_baas.settings(straight_speed=x, straight_acceleration=y) on maksimaalse kiiruse ja kiirenduse sattimiseks
+soidu_baas.settings(turn_rate=x, turn_acceleration=y) on maksimaalse keeramiskiirus ja -kiirenduse sattimiseks
 """
-vaikevalitu = hub_menu("1", "2", "3", "4", "5", "6", "X")  # Valimise menüü
+vaikevalitu = hub_menu("1", "2", "3", "4", "5", "6", "X")  # Valimise menyy
 if vaikevalitu == "1":
     import zesimene
 elif vaikevalitu == "2":
